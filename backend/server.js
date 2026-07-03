@@ -12,8 +12,22 @@ connectDB();
 const app = express();
 
 // Middleware
+const allowedOrigins = [
+  "https://kenzo-fitness.netlify.app",
+  "http://localhost:5173",
+];
+
 app.use(cors({
-  origin: '*', // Allow all origins for testing
+  origin: function (origin, callback) {
+    // Allow Postman or server-to-server requests
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
 }));
 app.use(express.json());
