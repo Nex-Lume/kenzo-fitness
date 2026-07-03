@@ -15,6 +15,7 @@ const app = express();
 const allowedOrigins = [
   "https://kenzo-fitness.netlify.app",
   "http://localhost:5173",
+   "https://kenzo-fit.netlify.app",
 ];
 
 app.use(cors({
