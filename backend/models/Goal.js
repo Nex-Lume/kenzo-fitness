@@ -6,20 +6,20 @@ const goalSchema = new mongoose.Schema({
     ref: 'Member',
     required: true,
   },
-  type: {
+  trainerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Trainer',
+    required: true,
+  },
+  goalType: {
     type: String,
-    enum: ['Weight Loss', 'Weight Gain', 'Muscle Gain', 'Fat Loss', 'Maintain Weight'],
+    enum: ['Weight Loss', 'Weight Gain', 'Fat Loss', 'Muscle Gain', 'Strength'],
     required: true,
   },
-  targetValue: {
+  targetWeight: {
     type: Number,
-    required: true,
   },
-  currentValue: {
-    type: Number,
-    required: true,
-  },
-  progressPercentage: {
+  progress: {
     type: Number,
     default: 0,
   },

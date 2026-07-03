@@ -22,6 +22,9 @@ const workoutPlanSchema = new mongoose.Schema({
     type: String,
     enum: ['beginner', 'intermediate', 'advanced'],
   },
+  duration: {
+    type: String, // e.g., '4 weeks', '12 weeks'
+  },
   startDate: {
     type: Date,
   },
@@ -30,11 +33,12 @@ const workoutPlanSchema = new mongoose.Schema({
   },
   exercises: [{
     exerciseName: String,
-    muscleGroup: String,
+    bodyPart: String,
+    equipment: String,
     sets: Number,
     reps: Number,
     weight: String,
-    restTime: String,
+    rest: String,
     notes: String,
   }],
   status: {

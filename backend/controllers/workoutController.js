@@ -42,7 +42,7 @@ const getWorkoutPlanByMember = async (req, res) => {
 // @access  Private/Trainer,Admin
 const createWorkoutPlan = async (req, res) => {
   try {
-    const { memberId, planName, goal, level, startDate, endDate, exercises, status } = req.body;
+    const { memberId, planName, goal, level, duration, startDate, endDate, exercises, status } = req.body;
 
     let trainerId = req.body.trainerId;
     if (req.user.role === 'trainer') {
@@ -62,6 +62,7 @@ const createWorkoutPlan = async (req, res) => {
       planName,
       goal,
       level,
+      duration,
       startDate,
       endDate,
       exercises,

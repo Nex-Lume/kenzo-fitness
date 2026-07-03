@@ -9,6 +9,7 @@ const {
   renewMembership,
   updatePaymentStatus,
   updateProfile,
+  updateFitnessProfile,
 } = require('../controllers/memberController');
 const { protect, adminOnly } = require('../middleware/authMiddleware');
 
@@ -20,6 +21,7 @@ router
 
 // Member profile update
 router.put('/profile', protect, updateProfile);
+router.put('/fitness-profile', protect, updateFitnessProfile);
 
 // Get single member, edit member, delete member
 router

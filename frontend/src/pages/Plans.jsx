@@ -71,7 +71,7 @@ const Plans = () => {
   }, []);
 
   return (
-    <div className="bg-[#090d16] py-20 px-4 text-slate-100 relative">
+    <div className="bg-[#0a0a0a] py-20 px-4 text-slate-100 relative">
       {/* Background glow */}
       <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-violet-900/10 via-transparent to-transparent"></div>
 
@@ -88,7 +88,7 @@ const Plans = () => {
         {/* Dynamic Cards Grid */}
         {loading ? (
           <div className="flex h-48 items-center justify-center">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-950/40 border-t-fuchsia-500"></div>
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-white/10 border-t-fuchsia-500"></div>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -134,7 +134,7 @@ const Plans = () => {
                       className={`block w-full text-center rounded-xl py-3.5 text-sm font-black uppercase tracking-widest transition-all text-white ${
                         isYearly
                           ? 'bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:shadow-[0_0_25px_rgba(217,70,239,0.5)] hover:scale-105 active:scale-95'
-                          : 'bg-[#151c32] hover:bg-violet-600 hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:scale-105 active:scale-95 border border-indigo-500/20'
+                          : 'bg-[#151c32] hover:bg-[#c1ff00] text-black hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:scale-105 active:scale-95 border border-indigo-500/20'
                       }`}
                     >
                       Join KenzoFitness

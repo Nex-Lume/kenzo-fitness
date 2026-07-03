@@ -20,9 +20,15 @@ const trainerSchema = new mongoose.Schema({
     type: String,
     enum: ['Male', 'Female', 'Other'],
   },
+  dob: {
+    type: Date,
+  },
   specialization: {
     type: String,
   },
+  qualifications: [{
+    type: String,
+  }],
   experience: {
     type: Number, // Years of experience
   },
@@ -42,6 +48,10 @@ const trainerSchema = new mongoose.Schema({
   },
   availability: {
     type: String, // e.g., 'Morning', 'Evening', 'Full Day'
+  },
+  joiningDate: {
+    type: Date,
+    default: Date.now,
   },
   assignedMembers: [{
     type: mongoose.Schema.Types.ObjectId,

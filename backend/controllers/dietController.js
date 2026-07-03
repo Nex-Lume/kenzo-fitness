@@ -42,7 +42,7 @@ const getDietPlanByMember = async (req, res) => {
 // @access  Private/Trainer,Admin
 const createDietPlan = async (req, res) => {
   try {
-    const { memberId, planName, goal, calories, protein, carbs, fats, waterIntake, meals, startDate, endDate, status } = req.body;
+    const { memberId, planName, goal, calories, protein, carbs, fat, water, meals, supplements, notes, startDate, endDate, status } = req.body;
 
     let trainerId = req.body.trainerId;
     if (req.user.role === 'trainer') {
@@ -63,9 +63,11 @@ const createDietPlan = async (req, res) => {
       calories,
       protein,
       carbs,
-      fats,
-      waterIntake,
+      fat,
+      water,
       meals,
+      supplements,
+      notes,
       startDate,
       endDate,
       status

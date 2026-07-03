@@ -72,7 +72,7 @@ const Attendance = () => {
           <UserCheck className="h-7 w-7 text-emerald-500" />
           <span>My Attendance</span>
         </h1>
-        <p className="text-xs text-zinc-500 mt-1">Check in and out of the gym, and track your visit history.</p>
+        <p className="text-xs text-gray-500 mt-1">Check in and out of the gym, and track your visit history.</p>
       </div>
 
       {error && (
@@ -83,14 +83,14 @@ const Attendance = () => {
       )}
 
       {/* Today's Action Card */}
-      <div className="bg-zinc-900/40 border border-zinc-800 rounded-2xl p-6 md:p-8 text-center flex flex-col items-center space-y-6">
-        <h2 className="text-xl font-bold text-zinc-100 uppercase tracking-widest">Today's Session</h2>
+      <div className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 md:p-8 text-center flex flex-col items-center space-y-6">
+        <h2 className="text-xl font-bold text-white uppercase tracking-widest">Today's Session</h2>
         
         {loading ? (
-          <div className="animate-pulse h-12 w-48 bg-zinc-800 rounded-xl"></div>
+          <div className="animate-pulse h-12 w-48 bg-white/5 rounded-xl"></div>
         ) : !todayAttendance ? (
           <div className="space-y-4">
-            <p className="text-sm text-zinc-400 max-w-sm">You haven't checked in today. Please make sure you have booked a slot before checking in.</p>
+            <p className="text-sm text-gray-400 max-w-sm">You haven't checked in today. Please make sure you have booked a slot before checking in.</p>
             <button
               onClick={handleCheckIn}
               disabled={actionLoading}
@@ -105,7 +105,7 @@ const Attendance = () => {
               <CheckCircle2 className="h-5 w-5" />
               <span className="font-bold uppercase tracking-wider text-sm">Checked In at {new Date(todayAttendance.checkIn).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
             </div>
-            <p className="text-sm text-zinc-400">Have a great workout! Don't forget to check out when you leave.</p>
+            <p className="text-sm text-gray-400">Have a great workout! Don't forget to check out when you leave.</p>
             <button
               onClick={handleCheckOut}
               disabled={actionLoading}
@@ -120,7 +120,7 @@ const Attendance = () => {
               <CheckCircle2 className="h-6 w-6" />
               <span className="font-black uppercase tracking-wider">Session Completed</span>
             </div>
-            <p className="text-xs text-zinc-500 mt-2">
+            <p className="text-xs text-gray-500 mt-2">
               Checked In: {new Date(todayAttendance.checkIn).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} | 
               Checked Out: {new Date(todayAttendance.checkOut).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
             </p>
@@ -129,19 +129,19 @@ const Attendance = () => {
       </div>
 
       {/* History Table */}
-      <div className="bg-zinc-900/30 border border-zinc-800 rounded-2xl overflow-hidden">
-        <div className="p-5 border-b border-zinc-800">
-          <h3 className="font-bold text-zinc-200 uppercase tracking-wide text-sm">Attendance History</h3>
+      <div className="bg-[#111111]/30 border border-white/10 rounded-2xl overflow-hidden">
+        <div className="p-5 border-b border-white/10">
+          <h3 className="font-bold text-white uppercase tracking-wide text-sm">Attendance History</h3>
         </div>
         
         {loading ? (
-          <div className="p-8 text-center text-zinc-500 animate-pulse">Loading history...</div>
+          <div className="p-8 text-center text-gray-500 animate-pulse">Loading history...</div>
         ) : attendances.length === 0 ? (
-          <div className="p-8 text-center text-zinc-500 text-sm">No attendance records found.</div>
+          <div className="p-8 text-center text-gray-500 text-sm">No attendance records found.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-zinc-950/50 text-zinc-500 uppercase font-bold tracking-wider">
+              <thead className="bg-zinc-950/50 text-gray-500 uppercase font-bold tracking-wider">
                 <tr>
                   <th className="px-6 py-4">Date</th>
                   <th className="px-6 py-4">Check In</th>
@@ -151,14 +151,14 @@ const Attendance = () => {
               </thead>
               <tbody className="divide-y divide-zinc-800 text-zinc-300">
                 {attendances.map(record => (
-                  <tr key={record._id} className="hover:bg-zinc-800/30 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-zinc-200">
+                  <tr key={record._id} className="hover:bg-white/5/30 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-white">
                       {new Date(record.date).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
                     </td>
                     <td className="px-6 py-4 text-emerald-400 font-medium">
                       {record.checkIn ? new Date(record.checkIn).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--'}
                     </td>
-                    <td className="px-6 py-4 text-orange-400 font-medium">
+                    <td className="px-6 py-4 text-[#c1ff00] font-medium">
                       {record.checkOut ? new Date(record.checkOut).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--'}
                     </td>
                     <td className="px-6 py-4">

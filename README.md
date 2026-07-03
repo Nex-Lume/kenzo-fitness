@@ -215,3 +215,51 @@ After seeding, you can test the dashboards immediately using these credentials:
 - **QR Check-in**: Members have a QR code generated for their booking. Receptionists can scan it via `html5-qrcode`.
 - **Analytics & Reports**: Admin dashboard with Chart.js visualization for Revenue and table for Members, with CSV and PDF export functionality.
 - **Email & Auditing**: Backend `nodemailer` for notifications and robust audit logging for administrative actions.
+
+---
+
+## Recent Improvements
+
+### UI & UX Enhancements
+- **CSS Scoping**: Implemented CSS scoping (`kenzo-wrapper`) for the homepage to prevent global styles from bleeding into dashboard components.
+- **Dynamic Membership Plans**: The homepage now fetches and displays active membership plans directly from the backend API.
+- **Animated Plan Cards**: Replaced static jQuery-dependent flip cards with dynamic React state-driven flip cards, ensuring smooth 3D animations and responsive heights for varying content lengths.
+- **Admin Plan Management**: Added a "Short Description" field in the Admin Plans modal, allowing admins to customize the tagline displayed on the front of the plan cards on the homepage.
+
+---
+
+## Phase 4 Features (Fitness Management)
+
+### New Backend APIs
+- **Trainer Management**: `GET /api/trainers`, `POST /api/trainers`, `PUT /api/trainers/:id`, `DELETE /api/trainers/:id`, `PUT /api/trainers/:id/assign`
+- **Workout Plans**: Full CRUD API at `/api/workouts`
+- **Diet Plans**: Full CRUD API at `/api/diets`
+- **Body Progress**: Full CRUD API at `/api/progress`
+- **Fitness Goals**: Full CRUD API at `/api/goals`
+
+### New Frontend Pages
+- **/trainer/dashboard**: Overview for trainers including quick actions and statistics.
+- **/trainer/workout-plans**: Trainer panel to create and assign workout plans with individual exercise fields.
+- **/trainer/diet-plans**: Trainer panel to create and assign diet plans with macro targets and meals.
+- **/trainer/progress**: Trainer panel to view member body progress charts and photos.
+- **/trainer/goals**: Trainer panel to assign fitness goals and track progress completion.
+- **/dashboard/workouts**: Member panel to view their assigned workout plans.
+- **/dashboard/diets**: Member panel to view their assigned diet plans.
+- **/dashboard/progress**: Member panel to track and view body progress with Chart.js visualization.
+- **/dashboard/goals**: Member panel to view assigned fitness goals and progress tracking.
+
+### How to Test Phase 4 Workflows
+
+**1. Assigning Members to Trainers**
+- Log in as an Admin (`admin@gymflow.com`).
+- Navigate to **Trainers** in the sidebar. Click the blue **Assign Member** button on a trainer to link an existing member account to them.
+
+**2. Managing Fitness Programs**
+- Log in as a Trainer (`trainer@gymflow.com`).
+- Navigate to **Workout Plans**, **Diet Plans**, or **Fitness Goals**.
+- Create a new plan or goal and assign it to one of your members.
+
+**3. Tracking Progress**
+- Log in as a Member (`member@gymflow.com`).
+- Navigate to **Body Progress** to log new weight/measurements and upload physique photos.
+- Navigate to **My Goals**, **My Workouts**, or **My Diets** to view the plans assigned by the trainer.

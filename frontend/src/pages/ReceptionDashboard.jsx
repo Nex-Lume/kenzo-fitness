@@ -59,17 +59,17 @@ const ReceptionDashboard = () => {
     <div className="max-w-4xl mx-auto space-y-8">
       <div>
         <h1 className="text-3xl font-black text-white uppercase tracking-tight">Reception Panel</h1>
-        <p className="text-xs text-zinc-500 mt-1">Scan member QR codes for automated check-in.</p>
+        <p className="text-xs text-gray-500 mt-1">Scan member QR codes for automated check-in.</p>
       </div>
 
-      <div className="bg-zinc-900/30 border border-zinc-900 rounded-2xl p-8 flex flex-col items-center">
+      <div className="bg-[#111111]/30 border border-zinc-900 rounded-2xl p-8 flex flex-col items-center">
         {!isScanning ? (
           <div className="text-center space-y-4">
-            <div className="bg-zinc-950 p-6 rounded-full border border-zinc-800 inline-block">
+            <div className="bg-zinc-950 p-6 rounded-full border border-white/10 inline-block">
               <QrCode className="w-16 h-16 text-emerald-500" />
             </div>
-            <h2 className="text-xl font-bold text-zinc-100">Ready to Scan</h2>
-            <p className="text-zinc-500 text-sm">Ask the member to open their KenzoFitness app and present the QR code.</p>
+            <h2 className="text-xl font-bold text-white">Ready to Scan</h2>
+            <p className="text-gray-500 text-sm">Ask the member to open their KenzoFitness app and present the QR code.</p>
             <button
               onClick={() => setIsScanning(true)}
               className="mt-4 px-6 py-3 bg-emerald-500 text-emerald-950 font-black uppercase tracking-wider rounded-xl hover:bg-emerald-600 transition-colors"
@@ -82,7 +82,7 @@ const ReceptionDashboard = () => {
             <div id="reader" className="rounded-xl overflow-hidden border-2 border-emerald-500/50"></div>
             <button
               onClick={() => setIsScanning(false)}
-              className="mt-6 w-full px-4 py-3 bg-zinc-800 text-zinc-300 font-bold rounded-xl hover:bg-zinc-700 transition-colors"
+              className="mt-6 w-full px-4 py-3 bg-white/5 text-zinc-300 font-bold rounded-xl hover:bg-zinc-700 transition-colors"
             >
               Cancel Scan
             </button>
@@ -91,8 +91,8 @@ const ReceptionDashboard = () => {
 
         {loading && (
           <div className="mt-8 flex flex-col items-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-800 border-t-emerald-500"></div>
-            <p className="mt-4 text-zinc-400 font-semibold">Verifying booking...</p>
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/10 border-t-emerald-500"></div>
+            <p className="mt-4 text-gray-400 font-semibold">Verifying booking...</p>
           </div>
         )}
 

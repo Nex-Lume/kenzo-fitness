@@ -77,7 +77,7 @@ const AdminDashboard = () => {
   if (loading) {
     return (
       <div className="flex h-[50vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-800 border-t-orange-500"></div>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/10 border-t-[#c1ff00]"></div>
       </div>
     );
   }
@@ -86,7 +86,7 @@ const AdminDashboard = () => {
     return (
       <div className="rounded-2xl border border-red-500/10 bg-red-500/5 p-6 text-center text-red-400 max-w-xl mx-auto mt-10">
         <AlertCircle className="h-10 w-10 mx-auto mb-4" />
-        <h3 className="text-base font-bold text-zinc-200 mb-2">Metrics Fetch Failed</h3>
+        <h3 className="text-base font-bold text-white mb-2">Metrics Fetch Failed</h3>
         <p className="text-xs">{error}</p>
       </div>
     );
@@ -94,10 +94,12 @@ const AdminDashboard = () => {
 
   // Dashboard Stats card layout configuration
   const cardConfig = [
-    { title: 'Total Members', value: stats?.totalMembers || 0, icon: Users, desc: 'Registered accounts', color: 'text-zinc-100', bg: 'bg-zinc-900/40' },
+    { title: 'Total Members', value: stats?.totalMembers || 0, icon: Users, desc: 'Registered accounts', color: 'text-white', bg: 'bg-[#1a1a1a]' },
     { title: 'Active Members', value: stats?.activeMembers || 0, icon: Activity, desc: 'Active subscriptions', color: 'text-emerald-400', bg: 'bg-emerald-500/5' },
-    { title: 'Today\'s Bookings', value: stats?.todayBookings || 0, icon: Calendar, desc: 'Slots reserved', color: 'text-orange-400', bg: 'bg-orange-500/5' },
-    { title: 'Today\'s Attendance', value: stats?.todayAttendance || 0, icon: ShieldCheck, desc: 'Checked-in members', color: 'text-amber-400', bg: 'bg-amber-500/5' },
+    { title: 'Today\'s Bookings', value: stats?.todayBookings || 0, icon: Calendar, desc: 'Slots reserved', color: 'text-[#c1ff00]', bg: 'bg-[#c1ff00]/5' },
+    { title: 'Today\'s Attendance', value: stats?.todayAttendance || 0, icon: ShieldCheck, desc: 'Checked-in members', color: 'text-[#c1ff00]', bg: 'bg-[#c1ff00]/5' },
+    { title: 'Active Trainers', value: stats?.activeTrainers || 0, icon: UserPlus, desc: 'Currently assigned', color: 'text-cyan-400', bg: 'bg-cyan-500/5' },
+    { title: 'Inactive Trainers', value: stats?.inactiveTrainers || 0, icon: Users, desc: 'On leave / deactivated', color: 'text-rose-400', bg: 'bg-rose-500/5' },
   ];
 
   return (
@@ -106,12 +108,12 @@ const AdminDashboard = () => {
       <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
         <div>
           <h1 className="text-3xl font-black text-white uppercase tracking-tight">Overview</h1>
-          <p className="text-xs text-zinc-500 mt-1">KenzoFitness metrics and business summary dashboard.</p>
+          <p className="text-xs text-gray-500 mt-1">KenzoFitness metrics and business summary dashboard.</p>
         </div>
         <div className="flex items-center space-x-3">
           <Link
             to="/admin/attendance"
-            className="inline-flex items-center justify-center space-x-1.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 px-4 py-2.5 text-xs font-bold text-zinc-300 transition-colors"
+            className="inline-flex items-center justify-center space-x-1.5 rounded-xl bg-[#111111] border border-white/10 hover:bg-white/5 px-4 py-2.5 text-xs font-bold text-zinc-300 transition-colors"
           >
             <span>Attendance Log</span>
           </Link>
@@ -126,18 +128,18 @@ const AdminDashboard = () => {
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         {cardConfig.map((card, i) => {
           const Icon = card.icon;
           return (
             <div key={i} className={`rounded-2xl border border-zinc-900 p-6 ${card.bg} flex justify-between items-start`}>
               <div className="space-y-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">{card.title}</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">{card.title}</span>
                 <h3 className={`text-3xl font-black tracking-tight ${card.color}`}>{card.value}</h3>
-                <span className="text-[10px] text-zinc-500 block">{card.desc}</span>
+                <span className="text-[10px] text-gray-500 block">{card.desc}</span>
               </div>
               <div className="rounded-xl bg-zinc-950 p-2.5 border border-zinc-900">
-                <Icon className="h-5 w-5 text-zinc-400" />
+                <Icon className="h-5 w-5 text-gray-400" />
               </div>
             </div>
           );
@@ -146,16 +148,16 @@ const AdminDashboard = () => {
 
       {/* Recent Admissions Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="rounded-2xl border border-zinc-900 bg-zinc-900/30 p-6">
+        <div className="rounded-2xl border border-zinc-900 bg-[#111111]/30 p-6">
           <div className="flex items-center justify-between border-b border-zinc-900 pb-4 mb-6">
-            <h3 className="text-base font-bold text-zinc-200 flex items-center space-x-2">
+            <h3 className="text-base font-bold text-white flex items-center space-x-2">
               <TrendingUp className="h-4.5 w-4.5 text-emerald-400" />
               <span>Recent Admissions Requests</span>
             </h3>
           </div>
 
           {stats?.recentAdmissions?.length === 0 ? (
-            <div className="text-center py-12 text-zinc-500 text-xs">
+            <div className="text-center py-12 text-gray-500 text-xs">
               No recent admission requests found.
             </div>
           ) : (
@@ -163,9 +165,9 @@ const AdminDashboard = () => {
               <table className="w-full text-left text-xs border-collapse">
                 <tbody className="divide-y divide-zinc-900 text-zinc-300">
                   {stats?.recentAdmissions?.map((member) => (
-                    <tr key={member._id} className="hover:bg-zinc-900/30 transition-colors">
-                      <td className="py-4 pr-4 font-semibold text-zinc-200">{member.fullName}</td>
-                      <td className="py-4 px-4 font-medium text-orange-400">
+                    <tr key={member._id} className="hover:bg-[#111111]/30 transition-colors">
+                      <td className="py-4 pr-4 font-semibold text-white">{member.fullName}</td>
+                      <td className="py-4 px-4 font-medium text-[#c1ff00]">
                         {member.membershipPlan?.name || 'N/A'}
                       </td>
                       <td className="py-4 pl-4 text-right">
@@ -194,16 +196,16 @@ const AdminDashboard = () => {
         </div>
 
         {/* Expiring Members Panel */}
-        <div className="rounded-2xl border border-zinc-900 bg-zinc-900/30 p-6">
+        <div className="rounded-2xl border border-zinc-900 bg-[#111111]/30 p-6">
           <div className="flex items-center justify-between border-b border-zinc-900 pb-4 mb-6">
-            <h3 className="text-base font-bold text-zinc-200 flex items-center space-x-2">
+            <h3 className="text-base font-bold text-white flex items-center space-x-2">
               <AlertCircle className="h-4.5 w-4.5 text-red-400" />
               <span>Expiring Memberships (&lt;30 days)</span>
             </h3>
           </div>
 
           {!expiryStats || expiryStats.allExpiring.length === 0 ? (
-            <div className="text-center py-12 text-zinc-500 text-xs">
+            <div className="text-center py-12 text-gray-500 text-xs">
               No members are expiring soon.
             </div>
           ) : (
@@ -213,19 +215,19 @@ const AdminDashboard = () => {
                   {expiryStats.allExpiring.slice(0, 5).map((member) => {
                     const days = Math.ceil((new Date(member.expiryDate) - new Date()) / (1000 * 60 * 60 * 24));
                     return (
-                      <tr key={member._id} className="hover:bg-zinc-900/30 transition-colors">
-                        <td className="py-4 pr-4 font-semibold text-zinc-200">
+                      <tr key={member._id} className="hover:bg-[#111111]/30 transition-colors">
+                        <td className="py-4 pr-4 font-semibold text-white">
                           {member.fullName}
-                          <span className="block text-[10px] text-zinc-500 mt-0.5">{member.phone}</span>
+                          <span className="block text-[10px] text-gray-500 mt-0.5">{member.phone}</span>
                         </td>
-                        <td className="py-4 px-4 font-medium text-orange-400">
+                        <td className="py-4 px-4 font-medium text-[#c1ff00]">
                           {member.membershipPlan?.name || 'N/A'}
                         </td>
                         <td className="py-4 pl-4 text-right">
                           {days < 0 ? (
                             <span className="text-red-500 font-bold bg-red-500/10 px-2 py-0.5 rounded-full">Expired</span>
                           ) : (
-                            <span className="text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded-full">In {days} days</span>
+                            <span className="text-[#c1ff00] font-bold bg-amber-500/10 px-2 py-0.5 rounded-full">In {days} days</span>
                           )}
                         </td>
                       </tr>

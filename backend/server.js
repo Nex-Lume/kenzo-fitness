@@ -43,6 +43,7 @@ app.use('/api/settings', require('./routes/settingRoutes'));
 app.use('/api/workouts', require('./routes/workoutRoutes'));
 app.use('/api/diets', require('./routes/dietRoutes'));
 app.use('/api/progress', require('./routes/progressRoutes'));
+app.use('/api/goals', require('./routes/goalRoutes'));
 
 // Root API Endpoint
 app.get('/', (req, res) => {

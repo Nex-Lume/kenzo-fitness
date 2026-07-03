@@ -91,7 +91,7 @@ const MemberCheckout = () => {
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-[60vh]">
-      <div className="text-zinc-400 text-sm animate-pulse">Loading plans...</div>
+      <div className="text-gray-400 text-sm animate-pulse">Loading plans...</div>
     </div>
   );
 
@@ -99,7 +99,7 @@ const MemberCheckout = () => {
     <div className="max-w-5xl mx-auto space-y-8">
       <div>
         <h1 className="text-3xl font-black text-white uppercase tracking-tight">Membership Checkout</h1>
-        <p className="text-xs text-zinc-500 mt-1">Secure payments powered by Razorpay.</p>
+        <p className="text-xs text-gray-500 mt-1">Secure payments powered by Razorpay.</p>
       </div>
 
       {error && (
@@ -111,7 +111,7 @@ const MemberCheckout = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Plan Selector */}
         <div className="lg:col-span-2 space-y-4">
-          <h2 className="text-sm font-bold uppercase text-zinc-400 tracking-wider">Select a Plan</h2>
+          <h2 className="text-sm font-bold uppercase text-gray-400 tracking-wider">Select a Plan</h2>
           {plans.map(plan => (
             <button
               key={plan._id}
@@ -119,16 +119,16 @@ const MemberCheckout = () => {
               className={`w-full text-left p-6 rounded-2xl border-2 transition-all ${
                 selectedPlan?._id === plan._id
                   ? 'border-emerald-500 bg-emerald-500/5 shadow-lg shadow-emerald-500/10'
-                  : 'border-zinc-800 bg-zinc-900/30 hover:border-zinc-700'
+                  : 'border-white/10 bg-[#111111]/30 hover:border-zinc-700'
               }`}
             >
               <div className="flex justify-between items-center">
                 <div>
                   <h3 className="text-lg font-bold text-white">{plan.name}</h3>
-                  <p className="text-xs text-zinc-500 mt-1">{plan.durationInDays} days access</p>
+                  <p className="text-xs text-gray-500 mt-1">{plan.durationInDays} days access</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {(plan.features || []).slice(0, 2).map((f, i) => (
-                      <span key={i} className="flex items-center gap-1 text-[10px] text-zinc-400 bg-zinc-800 px-2 py-1 rounded-full">
+                      <span key={i} className="flex items-center gap-1 text-[10px] text-gray-400 bg-white/5 px-2 py-1 rounded-full">
                         <CheckCircle className="w-3 h-3 text-emerald-500" /> {f}
                       </span>
                     ))}
@@ -136,7 +136,7 @@ const MemberCheckout = () => {
                 </div>
                 <div className="text-right shrink-0 ml-4">
                   <span className="text-3xl font-black text-emerald-400">₹{plan.price}</span>
-                  <span className="text-xs text-zinc-500 block">/ {plan.durationInDays}d</span>
+                  <span className="text-xs text-gray-500 block">/ {plan.durationInDays}d</span>
                 </div>
               </div>
             </button>
@@ -145,25 +145,25 @@ const MemberCheckout = () => {
 
         {/* Order Summary */}
         <div className="space-y-6">
-          <div className="bg-zinc-900/30 border border-zinc-800 rounded-2xl p-6 sticky top-6">
-            <h2 className="text-sm font-bold uppercase text-zinc-400 tracking-wider mb-6">Order Summary</h2>
+          <div className="bg-[#111111]/30 border border-white/10 rounded-2xl p-6 sticky top-6">
+            <h2 className="text-sm font-bold uppercase text-gray-400 tracking-wider mb-6">Order Summary</h2>
             {selectedPlan ? (
               <div className="space-y-4">
                 <div className="flex justify-between text-sm">
-                  <span className="text-zinc-400">Plan</span>
+                  <span className="text-gray-400">Plan</span>
                   <span className="text-white font-semibold">{selectedPlan.name}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-zinc-400">Duration</span>
+                  <span className="text-gray-400">Duration</span>
                   <span className="text-white font-semibold">{selectedPlan.durationInDays} days</span>
                 </div>
-                <div className="border-t border-zinc-800 pt-4 flex justify-between">
+                <div className="border-t border-white/10 pt-4 flex justify-between">
                   <span className="text-zinc-300 font-bold">Total</span>
                   <span className="text-emerald-400 text-xl font-black">${selectedPlan.price}</span>
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-zinc-500">No plan selected.</p>
+              <p className="text-sm text-gray-500">No plan selected.</p>
             )}
 
             <button

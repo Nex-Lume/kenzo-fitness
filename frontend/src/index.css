@@ -1,9 +1,205 @@
 @import "tailwindcss";
 
+/* ===== Base Styles ===== */
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body,
 #root {
-  background-color: #090d16;
+  background-color: #0a0a0a;
   min-height: 100%;
-  color: #f1f5f9;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* ===== Custom Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c1ff00;
+}
+
+/* ===== Brand Ticker Marquee ===== */
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  display: flex;
+  animation: ticker-scroll 20s linear infinite;
+  width: max-content;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* ===== 3D Flip Card ===== */
+.flip-card {
+  perspective: 1000px;
+  height: 380px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* ===== Fade In Animation ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* ===== Gallery Hover Overlay ===== */
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.gallery-item img {
+  transition: transform 0.5s ease, filter 0.5s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.1);
+  filter: brightness(0.5);
+}
+
+.gallery-item .gallery-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ===== Testimonial Slider ===== */
+.testimonial-slide {
+  opacity: 0;
+  position: absolute;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateX(30px);
+}
+
+.testimonial-slide.active {
+  opacity: 1;
+  position: relative;
+  transform: translateX(0);
+}
+
+/* ===== Neon Glow Effect ===== */
+.neon-glow {
+  box-shadow: 0 0 20px rgba(193, 255, 0, 0.3),
+              0 0 60px rgba(193, 255, 0, 0.1);
+}
+
+.neon-glow:hover {
+  box-shadow: 0 0 30px rgba(193, 255, 0, 0.5),
+              0 0 80px rgba(193, 255, 0, 0.2);
+}
+
+/* ===== Divider Line ===== */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(193, 255, 0, 0.3),
+    transparent
+  );
+}
+
+/* ===== Pulse Animation for Metrics ===== */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ===== Brand Slider (image-based) ===== */
+@keyframes slide-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.slider-track {
+  display: flex;
+  animation: slide-scroll 25s linear infinite;
+  width: max-content;
+}
+
+.slider-track:hover {
+  animation-play-state: paused;
 }

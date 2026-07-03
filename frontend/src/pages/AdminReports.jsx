@@ -67,17 +67,17 @@ const AdminReports = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-black text-white uppercase tracking-tight">Analytics & Reports</h1>
-          <p className="text-xs text-zinc-500 mt-1">Export your data to CSV or PDF.</p>
+          <p className="text-xs text-gray-500 mt-1">Export your data to CSV or PDF.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-zinc-900/30 border border-zinc-900 rounded-2xl p-6">
+        <div className="bg-[#111111]/30 border border-zinc-900 rounded-2xl p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-bold text-zinc-100">Revenue</h2>
+            <h2 className="text-lg font-bold text-white">Revenue</h2>
             <div className="space-x-2">
-              <button onClick={() => handleExport('revenue', 'csv')} className="px-3 py-1 bg-zinc-800 text-xs text-white rounded hover:bg-zinc-700">CSV</button>
-              <button onClick={() => handleExport('revenue', 'pdf')} className="px-3 py-1 bg-orange-500/20 text-xs text-orange-400 border border-orange-500/50 rounded hover:bg-orange-500/30">PDF</button>
+              <button onClick={() => handleExport('revenue', 'csv')} className="px-3 py-1 bg-white/5 text-xs text-white rounded hover:bg-zinc-700">CSV</button>
+              <button onClick={() => handleExport('revenue', 'pdf')} className="px-3 py-1 bg-orange-500/20 text-xs text-[#c1ff00] border border-orange-500/50 rounded hover:bg-orange-500/30">PDF</button>
             </div>
           </div>
           <div className="h-64">
@@ -85,17 +85,17 @@ const AdminReports = () => {
           </div>
         </div>
 
-        <div className="bg-zinc-900/30 border border-zinc-900 rounded-2xl p-6">
+        <div className="bg-[#111111]/30 border border-zinc-900 rounded-2xl p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-bold text-zinc-100">Members Directory</h2>
+            <h2 className="text-lg font-bold text-white">Members Directory</h2>
             <div className="space-x-2">
-              <button onClick={() => handleExport('members', 'csv')} className="px-3 py-1 bg-zinc-800 text-xs text-white rounded hover:bg-zinc-700">CSV</button>
-              <button onClick={() => handleExport('members', 'pdf')} className="px-3 py-1 bg-orange-500/20 text-xs text-orange-400 border border-orange-500/50 rounded hover:bg-orange-500/30">PDF</button>
+              <button onClick={() => handleExport('members', 'csv')} className="px-3 py-1 bg-white/5 text-xs text-white rounded hover:bg-zinc-700">CSV</button>
+              <button onClick={() => handleExport('members', 'pdf')} className="px-3 py-1 bg-orange-500/20 text-xs text-[#c1ff00] border border-orange-500/50 rounded hover:bg-orange-500/30">PDF</button>
             </div>
           </div>
           <div className="overflow-auto max-h-64">
             <table className="w-full text-left text-xs">
-              <thead className="bg-zinc-950 text-zinc-500 sticky top-0">
+              <thead className="bg-zinc-950 text-gray-500 sticky top-0">
                 <tr>
                   <th className="p-3">Name</th>
                   <th className="p-3">Plan</th>

@@ -3,6 +3,7 @@ const Member = require('../models/Member');
 const Booking = require('../models/Booking');
 const GymSlot = require('../models/GymSlot');
 const Attendance = require('../models/Attendance');
+const Trainer = require('../models/Trainer');
 
 // @desc    Get dashboard metrics & recent members
 // @route   GET /api/dashboard/stats
@@ -40,6 +41,10 @@ const getDashboardStats = async (req, res) => {
     const todayBookings = await Booking.countDocuments({ date: today, status: 'booked' });
     const todayAttendance = await Attendance.countDocuments({ date: today, status: 'present' });
 
+    // 7. Trainer Stats
+    const activeTrainers = await Trainer.countDocuments({ status: 'active' });
+    const inactiveTrainers = await Trainer.countDocuments({ status: 'inactive' });
+
     return res.json({
       success: true,
       data: {
@@ -49,7 +54,9 @@ const getDashboardStats = async (req, res) => {
         totalRevenue,
         recentAdmissions,
         todayBookings,
-        todayAttendance
+        todayAttendance,
+        activeTrainers,
+        inactiveTrainers
       },
     });
   } catch (error) {

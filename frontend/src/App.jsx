@@ -38,9 +38,11 @@ import TrainerMembers from './pages/TrainerMembers';
 import TrainerWorkouts from './pages/TrainerWorkouts';
 import TrainerDiets from './pages/TrainerDiets';
 import TrainerProgress from './pages/TrainerProgress';
+import TrainerGoals from './pages/TrainerGoals';
 import MemberWorkouts from './pages/MemberWorkouts';
 import MemberDiets from './pages/MemberDiets';
 import MemberProgress from './pages/MemberProgress';
+import MemberGoals from './pages/MemberGoals';
 import MemberCheckout from './pages/MemberCheckout';
 import PaymentSuccess from './pages/PaymentSuccess';
 import PaymentFailed from './pages/PaymentFailed';
@@ -52,8 +54,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public Website Routes */}
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Home />} />
+          <Route path="/" element={<Home />} />
+          <Route element={<MainLayout />}>
             <Route path="plans" element={<Plans />} />
             <Route path="admission" element={<Register />} />
             <Route path="login" element={<Login />} />
@@ -77,6 +79,7 @@ function App() {
             <Route path="workouts" element={<MemberWorkouts />} />
             <Route path="diets" element={<MemberDiets />} />
             <Route path="progress" element={<MemberProgress />} />
+            <Route path="goals" element={<MemberGoals />} />
             <Route path="checkout" element={<MemberCheckout />} />
             <Route path="payment-success" element={<PaymentSuccess />} />
             <Route path="payment-failed" element={<PaymentFailed />} />
@@ -129,6 +132,7 @@ function App() {
             <Route path="workout-plans" element={<TrainerWorkouts />} />
             <Route path="diet-plans" element={<TrainerDiets />} />
             <Route path="progress" element={<TrainerProgress />} />
+            <Route path="goals" element={<TrainerGoals />} />
           </Route>
 
           {/* Fallback routing */}

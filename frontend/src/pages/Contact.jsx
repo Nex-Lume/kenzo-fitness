@@ -41,9 +41,9 @@ const Contact = () => {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-xl">
-        <h1 className="text-3xl font-black tracking-wider text-zinc-100 mb-2">Contact Us</h1>
-        <p className="text-zinc-400 mb-8">We'd love to hear from you. Send us a message below.</p>
+      <div className="bg-[#111111] border border-white/10 rounded-2xl p-8 shadow-xl">
+        <h1 className="text-3xl font-black tracking-wider text-white mb-2">Contact Us</h1>
+        <p className="text-gray-400 mb-8">We'd love to hear from you. Send us a message below.</p>
 
         <ErrorMessage message={error} />
         {successMsg && <Toast message={successMsg} type="success" onClose={() => setSuccessMsg('')} />}
@@ -58,7 +58,7 @@ const Contact = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
                 placeholder="John Doe"
               />
             </div>
@@ -70,7 +70,7 @@ const Contact = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
                 placeholder="john@example.com"
               />
             </div>
@@ -85,7 +85,7 @@ const Contact = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 required
-                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
                 placeholder="+1 234 567 8900"
               />
             </div>
@@ -97,7 +97,7 @@ const Contact = () => {
                 value={formData.subject}
                 onChange={handleChange}
                 required
-                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
                 placeholder="How can we help?"
               />
             </div>
@@ -111,7 +111,7 @@ const Contact = () => {
               onChange={handleChange}
               required
               rows={5}
-              className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 resize-none"
+              className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 resize-none"
               placeholder="Write your message here..."
             ></textarea>
           </div>

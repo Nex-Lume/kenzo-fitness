@@ -394,6 +394,42 @@ const updateProfile = async (req, res, next) => {
   }
 };
 
+// @desc    Update member fitness profile
+// @route   PUT /api/members/fitness-profile
+// @access  Private
+const updateFitnessProfile = async (req, res, next) => {
+  try {
+    const { fitnessLevel, medicalConditions, allergies, bloodGroup, emergencyContact, lifestyle, workoutExperience, currentInjuries } = req.body;
+    
+    let member = await Member.findOne({ user: req.user._id });
+    if (!member) {
+      res.status(404);
+      throw new Error('Member not found');
+    }
+
+    member.fitnessProfile = {
+      fitnessLevel,
+      medicalConditions,
+      allergies,
+      bloodGroup,
+      emergencyContact,
+      lifestyle,
+      workoutExperience,
+      currentInjuries
+    };
+
+    await member.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Fitness profile updated successfully',
+      data: member,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getMembers,
   getMemberById,
@@ -403,4 +439,5 @@ module.exports = {
   renewMembership,
   updatePaymentStatus,
   updateProfile,
+  updateFitnessProfile,
 };

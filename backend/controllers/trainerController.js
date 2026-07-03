@@ -31,7 +31,7 @@ const getTrainerById = async (req, res) => {
 // @access  Private/Admin
 const createTrainer = async (req, res) => {
   try {
-    const { fullName, email, phone, gender, specialization, experience, bio, salary, profileImage, availability, status } = req.body;
+    const { fullName, email, phone, gender, dob, qualifications, joiningDate, specialization, experience, bio, salary, profileImage, availability, status } = req.body;
 
     // Create user account first
     const user = await User.create({
@@ -48,6 +48,9 @@ const createTrainer = async (req, res) => {
       email,
       phone,
       gender,
+      dob,
+      qualifications,
+      joiningDate,
       specialization,
       experience,
       bio,
@@ -79,6 +82,25 @@ const assignMember = async (req, res) => {
     }
     
     res.json({ success: true, message: 'Member assigned successfully', data: trainer });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// @desc    Remove member from trainer
+// @route   PUT /api/trainers/:id/remove-member
+// @access  Private/Admin
+const removeMember = async (req, res) => {
+  try {
+    const { memberId } = req.body;
+    const trainer = await Trainer.findById(req.params.id);
+    
+    if (!trainer) return res.status(404).json({ success: false, message: 'Trainer not found' });
+    
+    trainer.assignedMembers = trainer.assignedMembers.filter(id => id.toString() !== memberId);
+    await trainer.save();
+    
+    res.json({ success: true, message: 'Member removed successfully', data: trainer });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -140,6 +162,7 @@ module.exports = {
   getTrainerById,
   createTrainer,
   assignMember,
+  removeMember,
   getTrainerProfile,
   updateTrainer,
   deleteTrainer

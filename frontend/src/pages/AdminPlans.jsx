@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Plus, Edit2, Trash2, Power } from 'lucide-react';
+import { Plus, Edit2, Trash2, Power, X } from 'lucide-react';
 import Toast from '../components/Toast';
 import ErrorMessage from '../components/ErrorMessage';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -19,6 +19,7 @@ const AdminPlans = () => {
     name: '',
     price: '',
     durationInDays: '',
+    description: '',
     features: '',
     isActive: true,
   });
@@ -44,7 +45,7 @@ const AdminPlans = () => {
 
   const openAddModal = () => {
     setModalMode('add');
-    setFormData({ name: '', price: '', durationInDays: '', features: '', isActive: true });
+    setFormData({ name: '', price: '', durationInDays: '', description: '', features: '', isActive: true });
     setIsModalOpen(true);
   };
 
@@ -55,6 +56,7 @@ const AdminPlans = () => {
       name: plan.name,
       price: plan.price,
       durationInDays: plan.durationInDays,
+      description: plan.description || '',
       features: plan.features.join('\n'), // join features with newline
       isActive: plan.isActive,
     });
@@ -123,8 +125,8 @@ const AdminPlans = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-black tracking-wider text-zinc-100">Membership Plans</h1>
-          <p className="text-zinc-400">Manage all available subscription plans</p>
+          <h1 className="text-3xl font-black tracking-wider text-white">Membership Plans</h1>
+          <p className="text-gray-400">Manage all available subscription plans</p>
         </div>
         <button
           onClick={openAddModal}
@@ -144,33 +146,33 @@ const AdminPlans = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {plans.map((plan) => (
-            <div key={plan._id} className={`bg-zinc-950 border ${plan.isActive ? 'border-zinc-800' : 'border-zinc-800 opacity-60'} rounded-xl p-6 relative`}>
+            <div key={plan._id} className={`bg-zinc-950 border ${plan.isActive ? 'border-white/10' : 'border-white/10 opacity-60'} rounded-xl p-6 relative`}>
               <div className="absolute top-4 right-4 flex gap-2">
                 <button
                   onClick={() => handleToggleActive(plan)}
                   title={plan.isActive ? 'Deactivate' : 'Activate'}
-                  className={`p-1.5 rounded-md transition-colors ${plan.isActive ? 'bg-zinc-900 text-emerald-500 hover:bg-emerald-500/20' : 'bg-zinc-900 text-zinc-500 hover:bg-emerald-500/20 hover:text-emerald-500'}`}
+                  className={`p-1.5 rounded-md transition-colors ${plan.isActive ? 'bg-[#111111] text-emerald-500 hover:bg-emerald-500/20' : 'bg-[#111111] text-gray-500 hover:bg-emerald-500/20 hover:text-emerald-500'}`}
                 >
                   <Power className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => openEditModal(plan)}
-                  className="p-1.5 rounded-md bg-zinc-900 text-blue-500 hover:bg-blue-500/20 transition-colors"
+                  className="p-1.5 rounded-md bg-[#111111] text-blue-500 hover:bg-blue-500/20 transition-colors"
                 >
                   <Edit2 className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleDelete(plan._id)}
-                  className="p-1.5 rounded-md bg-zinc-900 text-red-500 hover:bg-red-500/20 transition-colors"
+                  className="p-1.5 rounded-md bg-[#111111] text-red-500 hover:bg-red-500/20 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
 
-              <h2 className="text-xl font-bold text-zinc-100 mb-2">{plan.name}</h2>
+              <h2 className="text-xl font-bold text-white mb-2">{plan.name}</h2>
               <div className="flex items-end gap-1 mb-4">
-                <span className="text-3xl font-black text-orange-500">₹{plan.price}</span>
-                <span className="text-zinc-500 text-sm mb-1">/ {plan.durationInDays} days</span>
+                <span className="text-3xl font-black text-[#c1ff00]">₹{plan.price}</span>
+                <span className="text-gray-500 text-sm mb-1">/ {plan.durationInDays} days</span>
               </div>
               
               {!plan.isActive && (
@@ -181,7 +183,7 @@ const AdminPlans = () => {
 
               <ul className="space-y-2 mt-6 border-t border-zinc-900 pt-4">
                 {plan.features.map((feature, i) => (
-                  <li key={i} className="text-sm text-zinc-400 flex items-start gap-2">
+                  <li key={i} className="text-sm text-gray-400 flex items-start gap-2">
                     <span className="text-emerald-500 mt-0.5">•</span> {feature}
                   </li>
                 ))}
@@ -194,10 +196,10 @@ const AdminPlans = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md shadow-2xl animate-fade-in-up">
-            <div className="flex justify-between items-center p-6 border-b border-zinc-800">
-              <h2 className="text-xl font-bold text-zinc-100">{modalMode === 'add' ? 'Add Plan' : 'Edit Plan'}</h2>
-              <button onClick={() => setIsModalOpen(false)} className="text-zinc-500 hover:text-zinc-300">
+          <div className="bg-[#111111] border border-white/10 rounded-2xl w-full max-w-md shadow-2xl animate-fade-in-up">
+            <div className="flex justify-between items-center p-6 border-b border-white/10">
+              <h2 className="text-xl font-bold text-white">{modalMode === 'add' ? 'Add Plan' : 'Edit Plan'}</h2>
+              <button onClick={() => setIsModalOpen(false)} className="text-gray-500 hover:text-zinc-300">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -210,10 +212,20 @@ const AdminPlans = () => {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-orange-500"
+                  className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-orange-500"
                 />
               </div>
 
+              <div>
+                <label className="block text-sm font-semibold text-zinc-300 mb-1">Short Description (shown on homepage card)</label>
+                <input
+                  type="text"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-orange-500"
+                  placeholder="e.g. Build both power and technical precision"
+                />
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-zinc-300 mb-1">Price (₹)</label>
@@ -223,7 +235,7 @@ const AdminPlans = () => {
                     min="0"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-orange-500"
+                    className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-orange-500"
                   />
                 </div>
                 <div>
@@ -234,7 +246,7 @@ const AdminPlans = () => {
                     min="1"
                     value={formData.durationInDays}
                     onChange={(e) => setFormData({ ...formData, durationInDays: e.target.value })}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-orange-500"
+                    className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-orange-500"
                   />
                 </div>
               </div>
@@ -245,7 +257,7 @@ const AdminPlans = () => {
                   rows="4"
                   value={formData.features}
                   onChange={(e) => setFormData({ ...formData, features: e.target.value })}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-orange-500 resize-none"
+                  className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-orange-500 resize-none"
                   placeholder="24/7 Access&#10;Free classes&#10;Personal trainer"
                 ></textarea>
               </div>
@@ -261,11 +273,11 @@ const AdminPlans = () => {
                 <label htmlFor="isActive" className="text-sm text-zinc-300">Plan is active and visible</label>
               </div>
 
-              <div className="pt-4 flex justify-end gap-3 border-t border-zinc-800 mt-6">
+              <div className="pt-4 flex justify-end gap-3 border-t border-white/10 mt-6">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-sm font-semibold text-zinc-300 hover:bg-zinc-800 rounded-lg"
+                  className="px-4 py-2 text-sm font-semibold text-zinc-300 hover:bg-white/5 rounded-lg"
                 >
                   Cancel
                 </button>

@@ -93,10 +93,10 @@ const AdminSlots = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-zinc-900 pb-6 gap-4">
         <div>
           <h1 className="text-3xl font-black text-white uppercase tracking-tight flex items-center space-x-2">
-            <Clock className="h-7 w-7 text-orange-500" />
+            <Clock className="h-7 w-7 text-[#c1ff00]" />
             <span>Manage Gym Slots</span>
           </h1>
-          <p className="text-xs text-zinc-500 mt-1">Create, update, or disable booking timeslots.</p>
+          <p className="text-xs text-gray-500 mt-1">Create, update, or disable booking timeslots.</p>
         </div>
         <button
           onClick={handleOpenAdd}
@@ -109,14 +109,14 @@ const AdminSlots = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
-          <div className="col-span-full py-10 text-center text-zinc-500 animate-pulse">Loading slots...</div>
+          <div className="col-span-full py-10 text-center text-gray-500 animate-pulse">Loading slots...</div>
         ) : slots.length === 0 ? (
-          <div className="col-span-full py-10 text-center text-zinc-500">No gym slots found.</div>
+          <div className="col-span-full py-10 text-center text-gray-500">No gym slots found.</div>
         ) : (
           slots.map((slot) => (
-            <div key={slot._id} className="bg-zinc-900/40 border border-zinc-800 rounded-2xl p-6 relative group">
+            <div key={slot._id} className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 relative group">
               <div className="absolute top-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button onClick={() => handleOpenEdit(slot)} className="text-zinc-400 hover:text-white bg-zinc-950 p-1.5 rounded-lg border border-zinc-800">
+                <button onClick={() => handleOpenEdit(slot)} className="text-gray-400 hover:text-white bg-zinc-950 p-1.5 rounded-lg border border-white/10">
                   <Edit2 className="h-3.5 w-3.5" />
                 </button>
                 <button onClick={() => handleDelete(slot._id, slot.slotName)} className="text-red-400 hover:text-red-300 bg-red-500/10 p-1.5 rounded-lg border border-red-500/20">
@@ -125,20 +125,20 @@ const AdminSlots = () => {
               </div>
 
               <div className="pr-16">
-                <h3 className="text-lg font-bold text-zinc-100">{slot.slotName}</h3>
-                <div className="flex items-center space-x-1.5 text-orange-400 text-xs font-semibold mt-1">
+                <h3 className="text-lg font-bold text-white">{slot.slotName}</h3>
+                <div className="flex items-center space-x-1.5 text-[#c1ff00] text-xs font-semibold mt-1">
                   <Clock className="h-3.5 w-3.5" />
                   <span>{slot.startTime} - {slot.endTime}</span>
                 </div>
               </div>
               
-              <div className="flex justify-between items-center mt-6 pt-4 border-t border-zinc-800">
+              <div className="flex justify-between items-center mt-6 pt-4 border-t border-white/10">
                 <div className="flex flex-col">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Capacity</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Capacity</span>
                   <span className="text-sm font-semibold text-zinc-300">{slot.capacity} Max</span>
                 </div>
                 <div className="flex flex-col items-end">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Status</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Status</span>
                   <span className={`text-xs font-bold uppercase ${slot.status === 'active' ? 'text-emerald-400' : 'text-red-400'}`}>
                     {slot.status}
                   </span>
@@ -151,12 +151,12 @@ const AdminSlots = () => {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-lg p-6 md:p-8 relative">
-            <button onClick={() => setShowModal(false)} className="absolute top-6 right-6 text-zinc-500 hover:text-white">
+          <div className="bg-[#111111] border border-white/10 rounded-3xl w-full max-w-lg p-6 md:p-8 relative">
+            <button onClick={() => setShowModal(false)} className="absolute top-6 right-6 text-gray-500 hover:text-white">
               <X className="h-6 w-6" />
             </button>
             <h2 className="text-xl font-black text-white uppercase tracking-tight flex items-center space-x-2 mb-6">
-              <Dumbbell className="h-5.5 w-5.5 text-orange-500" />
+              <Dumbbell className="h-5.5 w-5.5 text-[#c1ff00]" />
               <span>{editMode ? 'Edit Gym Slot' : 'Add Gym Slot'}</span>
             </h2>
 
@@ -169,60 +169,60 @@ const AdminSlots = () => {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Slot Name</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Slot Name</label>
                 <input
                   type="text"
                   required
                   value={formData.slotName}
                   onChange={e => setFormData({...formData, slotName: e.target.value})}
                   placeholder="e.g. Morning Cardio"
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-xs text-zinc-100 focus:outline-none focus:border-orange-500"
+                  className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Start Time</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Start Time</label>
                   <input
                     type="text"
                     required
                     value={formData.startTime}
                     onChange={e => setFormData({...formData, startTime: e.target.value})}
                     placeholder="e.g. 6:00 AM"
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-xs text-zinc-100 focus:outline-none focus:border-orange-500"
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">End Time</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">End Time</label>
                   <input
                     type="text"
                     required
                     value={formData.endTime}
                     onChange={e => setFormData({...formData, endTime: e.target.value})}
                     placeholder="e.g. 7:00 AM"
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-xs text-zinc-100 focus:outline-none focus:border-orange-500"
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Capacity</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Capacity</label>
                   <input
                     type="number"
                     required
                     min={1}
                     value={formData.capacity}
                     onChange={e => setFormData({...formData, capacity: parseInt(e.target.value)})}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-xs text-zinc-100 focus:outline-none focus:border-orange-500"
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Status</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Status</label>
                   <select
                     value={formData.status}
                     onChange={e => setFormData({...formData, status: e.target.value})}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-xs text-zinc-100 focus:outline-none focus:border-orange-500"
+                    className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
                   >
                     <option value="active">Active</option>
                     <option value="disabled">Disabled</option>
@@ -230,8 +230,8 @@ const AdminSlots = () => {
                 </div>
               </div>
 
-              <div className="pt-4 flex justify-end space-x-3 border-t border-zinc-800 mt-6">
-                <button type="button" onClick={() => setShowModal(false)} className="px-5 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-xl text-xs font-semibold text-zinc-300">
+              <div className="pt-4 flex justify-end space-x-3 border-t border-white/10 mt-6">
+                <button type="button" onClick={() => setShowModal(false)} className="px-5 py-2.5 bg-[#111111] hover:bg-white/5 border border-white/10 rounded-xl text-xs font-semibold text-zinc-300">
                   Cancel
                 </button>
                 <button type="submit" className="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 rounded-xl text-xs font-bold text-zinc-950">

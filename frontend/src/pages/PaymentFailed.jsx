@@ -14,14 +14,14 @@ const PaymentFailed = () => {
 
       <div>
         <h1 className="text-3xl font-black text-white">Payment Failed</h1>
-        <p className="text-zinc-400 mt-2 text-sm">
+        <p className="text-gray-400 mt-2 text-sm">
           Something went wrong with your transaction. No amount has been deducted.
         </p>
       </div>
 
-      <div className="bg-zinc-900/30 border border-zinc-800 rounded-2xl p-6 space-y-3 text-sm text-left">
+      <div className="bg-[#111111]/30 border border-white/10 rounded-2xl p-6 space-y-3 text-sm text-left">
         <h3 className="text-zinc-300 font-bold">Possible reasons:</h3>
-        <ul className="space-y-2 text-zinc-500 list-disc list-inside">
+        <ul className="space-y-2 text-gray-500 list-disc list-inside">
           <li>Insufficient balance in your account</li>
           <li>Payment was cancelled by you</li>
           <li>Bank declined the transaction</li>
@@ -38,7 +38,7 @@ const PaymentFailed = () => {
         </Link>
         <Link
           to="/dashboard"
-          className="flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-6 py-3 rounded-xl transition-all"
+          className="flex items-center justify-center gap-2 bg-white/5 hover:bg-zinc-700 text-zinc-300 font-bold px-6 py-3 rounded-xl transition-all"
         >
           <ArrowLeft className="w-4 h-4" /> Back to Dashboard
         </Link>

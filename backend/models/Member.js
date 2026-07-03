@@ -75,6 +75,21 @@ const memberSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
+    fitnessProfile: {
+      fitnessLevel: { type: String, enum: ['Beginner', 'Intermediate', 'Advanced'] },
+      medicalConditions: { type: String },
+      allergies: { type: String },
+      bloodGroup: { type: String },
+      emergencyContact: { type: String },
+      lifestyle: {
+        smoking: { type: String, enum: ['Yes', 'No', 'Occasionally'] },
+        alcohol: { type: String, enum: ['Yes', 'No', 'Occasionally'] },
+        sleepHours: { type: Number },
+        dailyWaterIntake: { type: String },
+      },
+      workoutExperience: { type: String },
+      currentInjuries: { type: String },
+    },
   },
   {
     timestamps: true,

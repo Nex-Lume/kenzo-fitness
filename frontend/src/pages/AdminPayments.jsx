@@ -62,7 +62,7 @@ const AdminPayments = () => {
   if (loading)
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-950/40 border-t-violet-500"></div>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/10 border-t-violet-500"></div>
       </div>
     );
 
@@ -74,7 +74,7 @@ const AdminPayments = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-        <div className="rounded-2xl border border-indigo-950/40 bg-[#111827]/40 p-6 flex items-center space-x-4 shadow">
+        <div className="rounded-2xl border border-white/10 bg-[#111827]/40 p-6 flex items-center space-x-4 shadow">
           <div className="rounded-xl bg-emerald-500/10 p-3 border border-emerald-500/20">
             <DollarSign className="h-6 w-6 text-emerald-400" />
           </div>
@@ -83,16 +83,16 @@ const AdminPayments = () => {
             <p className="text-2xl font-black text-white mt-0.5">${totalRevenue.toLocaleString()}</p>
           </div>
         </div>
-        <div className="rounded-2xl border border-indigo-950/40 bg-[#111827]/40 p-6 flex items-center space-x-4 shadow">
-          <div className="rounded-xl bg-violet-500/10 p-3 border border-violet-500/20">
-            <CheckCircle className="h-6 w-6 text-violet-400" />
+        <div className="rounded-2xl border border-white/10 bg-[#111827]/40 p-6 flex items-center space-x-4 shadow">
+          <div className="rounded-xl bg-[#c1ff00]/10 p-3 border border-[#c1ff00]/20">
+            <CheckCircle className="h-6 w-6 text-[#c1ff00]" />
           </div>
           <div>
             <p className="text-xs text-slate-500 uppercase tracking-wider font-bold">Successful</p>
             <p className="text-2xl font-black text-white mt-0.5">{successCount}</p>
           </div>
         </div>
-        <div className="rounded-2xl border border-indigo-950/40 bg-[#111827]/40 p-6 flex items-center space-x-4 shadow">
+        <div className="rounded-2xl border border-white/10 bg-[#111827]/40 p-6 flex items-center space-x-4 shadow">
           <div className="rounded-xl bg-red-500/10 p-3 border border-red-500/20">
             <XCircle className="h-6 w-6 text-red-400" />
           </div>
@@ -118,13 +118,13 @@ const AdminPayments = () => {
             placeholder="Search by member name or invoice number..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-indigo-950/40 bg-[#090d16] pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+            className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] pl-10 pr-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-xl border border-indigo-950/40 bg-[#090d16] px-4 py-2.5 text-xs text-white outline-none focus:border-violet-500 transition-colors"
+          className="rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white outline-none focus:border-violet-500 transition-colors"
         >
           <option value="all">All Status</option>
           <option value="successful">Successful</option>
@@ -133,9 +133,9 @@ const AdminPayments = () => {
         </select>
       </div>
 
-      <div className="rounded-2xl border border-indigo-950/40 bg-[#111827]/40 overflow-hidden shadow-lg">
+      <div className="rounded-2xl border border-white/10 bg-[#111827]/40 overflow-hidden shadow-lg">
         <table className="w-full text-left text-sm">
-          <thead className="bg-[#0c1122] text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-indigo-950/40">
+          <thead className="bg-[#111111] text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-white/10">
             <tr>
               <th className="p-4">Invoice #</th>
               <th className="p-4">Member</th>

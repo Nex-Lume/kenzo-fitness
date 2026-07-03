@@ -20,7 +20,8 @@ import {
   QrCode,
   DollarSign,
   Apple,
-  TrendingUp
+  TrendingUp,
+  Target
 } from 'lucide-react';
 
 const DashboardLayout = () => {
@@ -58,6 +59,7 @@ const DashboardLayout = () => {
           { name: 'Workout Plans', path: '/trainer/workout-plans', icon: Dumbbell },
           { name: 'Diet Plans', path: '/trainer/diet-plans', icon: Apple },
           { name: 'Body Progress', path: '/trainer/progress', icon: TrendingUp },
+          { name: 'Fitness Goals', path: '/trainer/goals', icon: Target },
         ];
       case 'reception':
         return [
@@ -73,6 +75,7 @@ const DashboardLayout = () => {
           { name: 'My Workouts', path: '/dashboard/workouts', icon: Dumbbell },
           { name: 'My Diets', path: '/dashboard/diets', icon: Apple },
           { name: 'Body Progress', path: '/dashboard/progress', icon: TrendingUp },
+          { name: 'My Goals', path: '/dashboard/goals', icon: Target },
           { name: 'Attendance', path: '/dashboard/attendance', icon: CalendarCheck },
           { name: 'My Payments', path: '/dashboard/checkout', icon: DollarSign },
           { name: 'My Profile', path: '/dashboard/profile', icon: UserCheck },
@@ -83,10 +86,10 @@ const DashboardLayout = () => {
   const links = getLinks();
 
   return (
-    <div className="flex h-screen bg-[#090d16] text-slate-100 font-sans overflow-hidden">
+    <div className="flex h-screen bg-[#0a0a0a] text-slate-100 font-sans overflow-hidden">
       {/* Mobile top navigation */}
-      <div className="flex w-full items-center justify-between border-b border-indigo-950/40 bg-[#090d16]/90 backdrop-blur-md px-4 py-4 md:hidden absolute top-0 left-0 z-30 shadow-md">
-        <Link to="/" className="flex items-center space-x-2 text-xl font-black tracking-wider text-violet-500">
+      <div className="flex w-full items-center justify-between border-b border-white/10 bg-[#0a0a0a]/90 backdrop-blur-md px-4 py-4 md:hidden absolute top-0 left-0 z-30 shadow-md">
+        <Link to="/" className="flex items-center space-x-2 text-xl font-black tracking-wider text-[#c1ff00]">
           <Dumbbell className="h-6 w-6 text-emerald-400" />
           <span>KENZO<span className="text-white">FITNESS</span></span>
         </Link>
@@ -100,13 +103,13 @@ const DashboardLayout = () => {
 
       {/* Sidebar - Desktop and Mobile Overlay */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-indigo-950/40 bg-[#0c1122] p-5 transition-transform md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-white/10 bg-[#111111] p-5 transition-transform md:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } md:static shadow-[4px_0_30px_rgba(0,0,0,0.3)]`}
       >
         {/* Logo */}
         <div className="mb-8 flex items-center justify-between md:justify-start">
-          <Link to="/" className="flex items-center space-x-2 text-2xl font-black tracking-wider text-violet-500">
+          <Link to="/" className="flex items-center space-x-2 text-2xl font-black tracking-wider text-[#c1ff00]">
             <Dumbbell className="h-7 w-7 text-emerald-400" />
             <span>KENZO<span className="text-white">FITNESS</span></span>
           </Link>
@@ -119,9 +122,9 @@ const DashboardLayout = () => {
         </div>
 
         {/* User Card */}
-        <div className="mb-6 rounded-xl bg-[#151c33]/50 border border-indigo-950/40 p-4">
+        <div className="mb-6 rounded-xl bg-[#1a1a1a]/50 border border-white/10 p-4">
           <div className="flex items-center space-x-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-violet-500 to-indigo-500 text-sm font-black text-white uppercase">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#c1ff00] text-black text-sm font-black text-white uppercase">
               {user?.name ? user.name[0] : 'U'}
             </div>
             <div className="overflow-hidden">
@@ -145,7 +148,7 @@ const DashboardLayout = () => {
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center space-x-3 rounded-lg px-4 py-3 text-sm font-semibold transition-all ${
                   isActive
-                    ? 'bg-gradient-to-r from-violet-650 to-indigo-650 text-white shadow-lg shadow-violet-950/20 border-l-2 border-emerald-450 pl-3.5'
+                    ? 'bg-[#c1ff00] text-black text-white shadow-lg shadow-[#c1ff00]/20 border-l-2 border-emerald-450 pl-3.5'
                     : 'text-slate-400 hover:bg-[#151c32] hover:text-white'
                 }`}
               >
@@ -155,7 +158,7 @@ const DashboardLayout = () => {
             );
           })}
 
-          <hr className="border-indigo-950/40 my-4" />
+          <hr className="border-white/10 my-4" />
 
           {/* Link back to Main Gym Website */}
           <Link
@@ -180,7 +183,7 @@ const DashboardLayout = () => {
       </aside>
 
       {/* Main Content Pane */}
-      <div className="flex flex-1 flex-col overflow-y-auto bg-[#090d16] px-4 py-20 md:py-8 md:px-10 mt-16 md:mt-0">
+      <div className="flex flex-1 flex-col overflow-y-auto bg-[#0a0a0a] px-4 py-20 md:py-8 md:px-10 mt-16 md:mt-0">
         <Outlet />
         {/* Bottom padding to prevent content cut-off */}
         <div className="h-12" />

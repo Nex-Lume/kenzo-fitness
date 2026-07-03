@@ -15,6 +15,10 @@ const membershipPlanSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'Please add plan duration in days'],
     },
+    description: {
+      type: String,
+      default: '',
+    },
     features: {
       type: [String],
       default: [],

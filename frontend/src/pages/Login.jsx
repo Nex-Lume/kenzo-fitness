@@ -44,14 +44,14 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-[80vh] items-center justify-center bg-[#090d16] px-4 py-12">
+    <div className="flex min-h-[80vh] items-center justify-center bg-[#0a0a0a] px-4 py-12">
       {/* Background radial gradient */}
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-violet-500/5 via-transparent to-transparent"></div>
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#c1ff00]/5 via-transparent to-transparent"></div>
 
-      <div className="relative z-10 w-full max-w-md rounded-3xl border border-indigo-950/40 bg-[#111827]/40 p-8 shadow-xl backdrop-blur-md">
+      <div className="relative z-10 w-full max-w-md rounded-3xl border border-white/10 bg-[#111827]/40 p-8 shadow-xl backdrop-blur-md">
         {/* Branding header */}
         <div className="text-center mb-8">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-950/30 text-violet-400 mb-4 border border-violet-850/20">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-950/30 text-[#c1ff00] mb-4 border border-violet-850/20">
             <Dumbbell className="h-6 w-6 text-emerald-400 animate-pulse" />
           </div>
           <h2 className="text-2xl font-black tracking-tight text-white uppercase">Welcome Back</h2>
@@ -80,7 +80,7 @@ const Login = () => {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="you@example.com"
-                className="w-full rounded-xl border border-indigo-950/40 bg-[#090d16] py-3 pl-10 pr-4 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] py-3 pl-10 pr-4 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
               />
             </div>
           </div>
@@ -98,7 +98,7 @@ const Login = () => {
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 placeholder="••••••••"
-                className="w-full rounded-xl border border-indigo-950/40 bg-[#090d16] py-3 pl-10 pr-4 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] py-3 pl-10 pr-4 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
               />
             </div>
           </div>
@@ -107,7 +107,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 py-3.5 text-xs font-bold text-white shadow-md shadow-violet-950/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
+            className="w-full rounded-xl bg-[#c1ff00] text-black py-3.5 text-xs font-bold text-white shadow-md shadow-violet-950/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
           >
             {loading ? 'Authenticating...' : 'Sign In'}
           </button>
@@ -123,10 +123,10 @@ const Login = () => {
         </div>
 
         {/* Demo Credentials Hint */}
-        <div className="mt-8 rounded-2xl border border-indigo-950/40 bg-[#151c33]/40 p-4 text-[10px] text-slate-400 leading-relaxed space-y-1">
+        <div className="mt-8 rounded-2xl border border-white/10 bg-[#1a1a1a]/40 p-4 text-[10px] text-slate-400 leading-relaxed space-y-1">
           <span className="font-bold text-white uppercase tracking-wider block mb-1">Demo Credentials:</span>
           <div>Admin: <span className="text-emerald-400 font-semibold">admin@kenzofitness.com</span> / <span className="text-slate-300 font-mono">admin123</span></div>
-          <div>Demo Member: <span className="text-violet-400 font-semibold">member@kenzofitness.com</span> / <span className="text-slate-300 font-mono">member123</span></div>
+          <div>Demo Member: <span className="text-[#c1ff00] font-semibold">member@kenzofitness.com</span> / <span className="text-slate-300 font-mono">member123</span></div>
         </div>
       </div>
     </div>

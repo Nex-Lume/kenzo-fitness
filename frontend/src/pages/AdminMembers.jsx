@@ -250,9 +250,9 @@ const AdminMembers = () => {
       case 'active':
         return <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 text-[10px] font-bold text-emerald-400 capitalize">Active</span>;
       case 'pending':
-        return <span className="rounded-full bg-orange-500/10 border border-orange-500/20 px-2.5 py-0.5 text-[10px] font-bold text-orange-400 capitalize animate-pulse">Pending</span>;
+        return <span className="rounded-full bg-orange-500/10 border border-orange-500/20 px-2.5 py-0.5 text-[10px] font-bold text-[#c1ff00] capitalize animate-pulse">Pending</span>;
       default:
-        return <span className="rounded-full bg-zinc-800 border border-zinc-700 px-2.5 py-0.5 text-[10px] font-bold text-zinc-500 capitalize">Inactive</span>;
+        return <span className="rounded-full bg-white/5 border border-zinc-700 px-2.5 py-0.5 text-[10px] font-bold text-gray-500 capitalize">Inactive</span>;
     }
   };
 
@@ -261,7 +261,7 @@ const AdminMembers = () => {
       case 'paid':
         return <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 text-[9px] font-bold text-emerald-400 uppercase">Paid</span>;
       case 'pending':
-        return <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[9px] font-bold text-amber-400 uppercase">Pending</span>;
+        return <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[9px] font-bold text-[#c1ff00] uppercase">Pending</span>;
       default:
         return <span className="rounded-full bg-red-500/10 border border-red-500/20 px-2 py-0.5 text-[9px] font-bold text-red-400 uppercase">Unpaid</span>;
     }
@@ -270,7 +270,7 @@ const AdminMembers = () => {
   if (loading) {
     return (
       <div className="flex h-[50vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-800 border-t-orange-500"></div>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/10 border-t-[#c1ff00]"></div>
       </div>
     );
   }
@@ -281,10 +281,10 @@ const AdminMembers = () => {
       <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 border-b border-zinc-900 pb-6">
         <div>
           <h1 className="text-3xl font-black text-white uppercase tracking-tight flex items-center space-x-2">
-            <Users className="h-7 w-7 text-orange-500" />
+            <Users className="h-7 w-7 text-[#c1ff00]" />
             <span>Members Directory</span>
           </h1>
-          <p className="text-xs text-zinc-500 mt-1">Add, edit, status-manage, or remove KenzoFitness members.</p>
+          <p className="text-xs text-gray-500 mt-1">Add, edit, status-manage, or remove KenzoFitness members.</p>
         </div>
         <button
           onClick={handleOpenAdd}
@@ -314,18 +314,18 @@ const AdminMembers = () => {
             value={searchTerm}
             onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
             placeholder="Search by name, email, or phone..."
-            className="w-full rounded-xl border border-zinc-900 bg-zinc-900/20 py-2.5 pl-10 pr-4 text-xs text-zinc-100 placeholder-zinc-700 outline-none focus:border-orange-500 transition-colors"
+            className="w-full rounded-xl border border-zinc-900 bg-[#111111]/20 py-2.5 pl-10 pr-4 text-xs text-white placeholder-zinc-700 outline-none focus:border-orange-500 transition-colors"
           />
         </div>
 
         <div className="flex gap-3 overflow-x-auto pb-1 md:pb-0">
           {/* Status Filter */}
           <div className="flex items-center space-x-2 text-xs shrink-0">
-            <span className="text-zinc-500 hidden sm:block">Status:</span>
+            <span className="text-gray-500 hidden sm:block">Status:</span>
             <select
               value={statusFilter}
               onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-              className="rounded-xl border border-zinc-900 bg-zinc-900/20 px-3 py-2 text-xs text-zinc-200 outline-none focus:border-orange-500"
+              className="rounded-xl border border-zinc-900 bg-[#111111]/20 px-3 py-2 text-xs text-white outline-none focus:border-orange-500"
             >
               <option value="all">All Statuses</option>
               <option value="active">Active</option>
@@ -336,11 +336,11 @@ const AdminMembers = () => {
 
           {/* Payment Filter */}
           <div className="flex items-center space-x-2 text-xs shrink-0">
-            <span className="text-zinc-500 hidden sm:block">Payment:</span>
+            <span className="text-gray-500 hidden sm:block">Payment:</span>
             <select
               value={paymentFilter}
               onChange={(e) => { setPaymentFilter(e.target.value); setPage(1); }}
-              className="rounded-xl border border-zinc-900 bg-zinc-900/20 px-3 py-2 text-xs text-zinc-200 outline-none focus:border-orange-500"
+              className="rounded-xl border border-zinc-900 bg-[#111111]/20 px-3 py-2 text-xs text-white outline-none focus:border-orange-500"
             >
               <option value="all">All Payments</option>
               <option value="paid">Paid</option>
@@ -352,11 +352,11 @@ const AdminMembers = () => {
 
           {/* Plan Filter */}
           <div className="flex items-center space-x-2 text-xs shrink-0">
-            <span className="text-zinc-500 hidden sm:block">Plan:</span>
+            <span className="text-gray-500 hidden sm:block">Plan:</span>
             <select
               value={planFilter}
               onChange={(e) => { setPlanFilter(e.target.value); setPage(1); }}
-              className="rounded-xl border border-zinc-900 bg-zinc-900/20 px-3 py-2 text-xs text-zinc-200 outline-none focus:border-orange-500"
+              className="rounded-xl border border-zinc-900 bg-[#111111]/20 px-3 py-2 text-xs text-white outline-none focus:border-orange-500"
             >
               <option value="all">All Plans</option>
               {plans.map(p => (
@@ -374,7 +374,7 @@ const AdminMembers = () => {
                 setPlanFilter('all');
                 setPage(1);
               }}
-              className="px-3 py-2 text-xs text-zinc-400 hover:text-white shrink-0"
+              className="px-3 py-2 text-xs text-gray-400 hover:text-white shrink-0"
             >
               Clear
             </button>
@@ -383,16 +383,16 @@ const AdminMembers = () => {
       </div>
 
       {/* Main Grid table */}
-      <div className="rounded-2xl border border-zinc-900 bg-zinc-900/30 overflow-hidden">
+      <div className="rounded-2xl border border-zinc-900 bg-[#111111]/30 overflow-hidden">
         {filteredMembers.length === 0 ? (
-          <div className="text-center py-16 text-zinc-500 text-xs">
+          <div className="text-center py-16 text-gray-500 text-xs">
             No gym members found matching the current filters.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-zinc-900 bg-zinc-950/40 text-zinc-500 font-bold uppercase tracking-wider text-[10px]">
+                <tr className="border-b border-zinc-900 bg-zinc-950/40 text-gray-500 font-bold uppercase tracking-wider text-[10px]">
                   <th className="py-4 px-6">Name</th>
                   <th className="py-4 px-4">Contact Info</th>
                   <th className="py-4 px-4">Plan Selected</th>
@@ -404,13 +404,13 @@ const AdminMembers = () => {
               </thead>
               <tbody className="divide-y divide-zinc-900 text-zinc-300">
                 {paginatedMembers.map((member) => (
-                  <tr key={member._id} className="hover:bg-zinc-900/20 transition-colors">
-                    <td className="py-4 px-6 font-bold text-zinc-100">{member.fullName}</td>
+                  <tr key={member._id} className="hover:bg-[#111111]/20 transition-colors">
+                    <td className="py-4 px-6 font-bold text-white">{member.fullName}</td>
                     <td className="py-4 px-4 space-y-0.5">
-                      <span className="block text-zinc-200">{member.email}</span>
-                      <span className="block text-zinc-500 text-[10px]">{member.phone}</span>
+                      <span className="block text-white">{member.email}</span>
+                      <span className="block text-gray-500 text-[10px]">{member.phone}</span>
                     </td>
-                    <td className="py-4 px-4 font-semibold text-orange-400">
+                    <td className="py-4 px-4 font-semibold text-[#c1ff00]">
                       {member.membershipPlan?.name || 'N/A'}
                     </td>
                     <td className="py-4 px-4">
@@ -419,7 +419,7 @@ const AdminMembers = () => {
                         <select
                           value={member.paymentStatus}
                           onChange={(e) => handleUpdatePayment(member._id, e.target.value)}
-                          className="mt-1 text-[10px] bg-zinc-950 border border-zinc-800 rounded px-1 py-0.5 text-zinc-400 focus:outline-none"
+                          className="mt-1 text-[10px] bg-zinc-950 border border-white/10 rounded px-1 py-0.5 text-gray-400 focus:outline-none"
                         >
                           <option value="paid">Mark Paid</option>
                           <option value="pending">Mark Pending</option>
@@ -428,7 +428,7 @@ const AdminMembers = () => {
                         </select>
                       </div>
                     </td>
-                    <td className="py-4 px-4 text-zinc-500 font-semibold">
+                    <td className="py-4 px-4 text-gray-500 font-semibold">
                       {new Date(member.expiryDate).toLocaleDateString()}
                     </td>
                     <td className="py-4 px-4">{getStatusBadge(member.status)}</td>
@@ -448,7 +448,7 @@ const AdminMembers = () => {
                       </button>
                       <button
                         onClick={() => handleOpenEdit(member)}
-                        className="inline-flex items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900/60 p-1.5 text-zinc-400 hover:text-white hover:border-orange-500 transition-colors cursor-pointer"
+                        className="inline-flex items-center justify-center rounded-lg border border-white/10 bg-[#111111]/60 p-1.5 text-gray-400 hover:text-white hover:border-orange-500 transition-colors cursor-pointer"
                         title="Edit Details"
                       >
                         <Edit2 className="h-3.5 w-3.5" />
@@ -475,17 +475,17 @@ const AdminMembers = () => {
           <button
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-xs font-semibold text-zinc-300 disabled:opacity-50"
+            className="px-4 py-2 bg-[#111111] border border-white/10 rounded-lg text-xs font-semibold text-zinc-300 disabled:opacity-50"
           >
             Previous
           </button>
-          <span className="text-xs text-zinc-500">
+          <span className="text-xs text-gray-500">
             Page {page} of {totalPages}
           </span>
           <button
             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-xs font-semibold text-zinc-300 disabled:opacity-50"
+            className="px-4 py-2 bg-[#111111] border border-white/10 rounded-lg text-xs font-semibold text-zinc-300 disabled:opacity-50"
           >
             Next
           </button>
@@ -495,19 +495,19 @@ const AdminMembers = () => {
       {/* ADD / EDIT MODAL OVERLAY */}
       {(showAddModal || showEditModal) && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/80 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="w-full max-w-2xl rounded-3xl border border-zinc-900 bg-zinc-900 p-6 md:p-8 max-h-[90vh] overflow-y-auto relative">
+          <div className="w-full max-w-2xl rounded-3xl border border-zinc-900 bg-[#111111] p-6 md:p-8 max-h-[90vh] overflow-y-auto relative">
             <button
               onClick={() => {
                 setShowAddModal(false);
                 setShowEditModal(false);
               }}
-              className="absolute top-4 right-4 text-zinc-500 hover:text-white"
+              className="absolute top-4 right-4 text-gray-500 hover:text-white"
             >
               <X className="h-6 w-6" />
             </button>
 
             <h2 className="text-xl font-black text-white uppercase mb-6 flex items-center space-x-2">
-              <Dumbbell className="h-5.5 w-5.5 text-orange-500" />
+              <Dumbbell className="h-5.5 w-5.5 text-[#c1ff00]" />
               <span>{showAddModal ? 'Add New Member' : 'Edit Member Details'}</span>
             </h2>
 
@@ -522,46 +522,46 @@ const AdminMembers = () => {
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 {/* Full Name */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Full Name</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Full Name</label>
                   <input
                     type="text"
                     required
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     placeholder="Marcus Vance"
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5 text-xs text-zinc-100 placeholder-zinc-700 outline-none focus:border-orange-500"
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-xs text-white placeholder-zinc-700 outline-none focus:border-orange-500"
                   />
                 </div>
 
                 {/* Email */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Email Address</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Email Address</label>
                   <input
                     type="email"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="marcus@example.com"
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5 text-xs text-zinc-100 placeholder-zinc-700 outline-none focus:border-orange-500"
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-xs text-white placeholder-zinc-700 outline-none focus:border-orange-500"
                   />
                 </div>
 
                 {/* Phone */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Phone Number</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Phone Number</label>
                   <input
                     type="text"
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="+1 (555) 018-9999"
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5 text-xs text-zinc-100 placeholder-zinc-700 outline-none focus:border-orange-500"
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-xs text-white placeholder-zinc-700 outline-none focus:border-orange-500"
                   />
                 </div>
 
                 {/* Password / Login Info */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">
                     {showAddModal ? 'Create Password (Login)' : 'Update Password (optional)'}
                   </label>
                   <input
@@ -570,13 +570,13 @@ const AdminMembers = () => {
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     placeholder={showAddModal ? '••••••••' : 'Leave blank to retain current'}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5 text-xs text-zinc-100 placeholder-zinc-700 outline-none focus:border-orange-500"
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-xs text-white placeholder-zinc-700 outline-none focus:border-orange-500"
                   />
                 </div>
 
                 {/* Age */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Age</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Age</label>
                   <input
                     type="number"
                     required
@@ -584,17 +584,17 @@ const AdminMembers = () => {
                     value={formData.age}
                     onChange={(e) => setFormData({ ...formData, age: e.target.value })}
                     placeholder="25"
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5 text-xs text-zinc-100 placeholder-zinc-700 outline-none focus:border-orange-500"
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-xs text-white placeholder-zinc-700 outline-none focus:border-orange-500"
                   />
                 </div>
 
                 {/* Gender */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Gender</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Gender</label>
                   <select
                     value={formData.gender}
                     onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2.5 px-4 text-xs text-zinc-100 outline-none focus:border-orange-500"
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 py-2.5 px-4 text-xs text-white outline-none focus:border-orange-500"
                   >
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -605,38 +605,38 @@ const AdminMembers = () => {
 
               {/* Address */}
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Address</label>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Address</label>
                 <input
                   type="text"
                   required
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   placeholder="123 Fitness Ave, Apt 4B, Iron City"
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5 text-xs text-zinc-100 placeholder-zinc-700 outline-none focus:border-orange-500"
+                  className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-xs text-white placeholder-zinc-700 outline-none focus:border-orange-500"
                 />
               </div>
 
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 {/* Emergency Contact */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Emergency Contact Details</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Emergency Contact Details</label>
                   <input
                     type="text"
                     required
                     value={formData.emergencyContact}
                     onChange={(e) => setFormData({ ...formData, emergencyContact: e.target.value })}
                     placeholder="Jane Doe (+1 555-018-9988)"
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5 text-xs text-zinc-100 placeholder-zinc-700 outline-none focus:border-orange-500"
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 px-4 py-2.5 text-xs text-white placeholder-zinc-700 outline-none focus:border-orange-500"
                   />
                 </div>
 
                 {/* Plan */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Membership Plan</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Membership Plan</label>
                   <select
                     value={formData.membershipPlan}
                     onChange={(e) => setFormData({ ...formData, membershipPlan: e.target.value })}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2.5 px-4 text-xs text-zinc-100 outline-none focus:border-orange-500"
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 py-2.5 px-4 text-xs text-white outline-none focus:border-orange-500"
                   >
                     {plans.map((p) => (
                       <option key={p._id} value={p._id}>
@@ -648,11 +648,11 @@ const AdminMembers = () => {
 
                 {/* Payment Status */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Payment Status</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Payment Status</label>
                   <select
                     value={formData.paymentStatus}
                     onChange={(e) => setFormData({ ...formData, paymentStatus: e.target.value })}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2.5 px-4 text-xs text-zinc-100 outline-none focus:border-orange-500"
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 py-2.5 px-4 text-xs text-white outline-none focus:border-orange-500"
                   >
                     <option value="pending">Pending</option>
                     <option value="paid">Paid</option>
@@ -662,11 +662,11 @@ const AdminMembers = () => {
 
                 {/* Account Status */}
                 <div>
-                  <label className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1.5">Account Status</label>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Account Status</label>
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    className="w-full rounded-xl border border-zinc-800 bg-zinc-950 py-2.5 px-4 text-xs text-zinc-100 outline-none focus:border-orange-500"
+                    className="w-full rounded-xl border border-white/10 bg-zinc-950 py-2.5 px-4 text-xs text-white outline-none focus:border-orange-500"
                   >
                     <option value="pending">Pending</option>
                     <option value="active">Active</option>
@@ -676,14 +676,14 @@ const AdminMembers = () => {
               </div>
 
               {/* Submit Buttons */}
-              <div className="mt-8 flex justify-end space-x-3 border-t border-zinc-800 pt-5">
+              <div className="mt-8 flex justify-end space-x-3 border-t border-white/10 pt-5">
                 <button
                   type="button"
                   onClick={() => {
                     setShowAddModal(false);
                     setShowEditModal(false);
                   }}
-                  className="rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 px-5 py-2.5 text-xs font-semibold cursor-pointer"
+                  className="rounded-xl border border-white/10 bg-[#111111] hover:bg-white/5 px-5 py-2.5 text-xs font-semibold cursor-pointer"
                 >
                   Cancel
                 </button>

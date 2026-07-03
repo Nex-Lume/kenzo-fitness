@@ -64,8 +64,8 @@ const MemberProfile = () => {
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-black tracking-wider text-zinc-100">My Profile</h1>
-          <p className="text-zinc-400">View and manage your personal details</p>
+          <h1 className="text-3xl font-black tracking-wider text-white">My Profile</h1>
+          <p className="text-gray-400">View and manage your personal details</p>
         </div>
         {!isEditing && (
           <button
@@ -80,14 +80,14 @@ const MemberProfile = () => {
       <ErrorMessage message={error} />
       <Toast message={toastMsg} onClose={() => setToastMsg('')} />
 
-      <div className="bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden">
-        <div className="p-6 bg-zinc-900 border-b border-zinc-800 flex items-center gap-4">
+      <div className="bg-zinc-950 border border-white/10 rounded-xl overflow-hidden">
+        <div className="p-6 bg-[#111111] border-b border-white/10 flex items-center gap-4">
           <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center text-2xl font-black text-zinc-950 uppercase">
             {member.fullName[0]}
           </div>
           <div>
-            <h2 className="text-xl font-bold text-zinc-100">{member.fullName}</h2>
-            <p className="text-zinc-400">{member.email}</p>
+            <h2 className="text-xl font-bold text-white">{member.fullName}</h2>
+            <p className="text-gray-400">{member.email}</p>
           </div>
         </div>
 
@@ -102,7 +102,7 @@ const MemberProfile = () => {
                 onChange={handleChange}
                 disabled={!isEditing}
                 required
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
+                className="w-full bg-[#111111] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
               />
             </div>
             <div>
@@ -111,9 +111,9 @@ const MemberProfile = () => {
                 type="email"
                 value={member.email}
                 disabled
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-500 cursor-not-allowed opacity-50"
+                className="w-full bg-[#111111] border border-white/10 rounded-lg px-4 py-2.5 text-gray-500 cursor-not-allowed opacity-50"
               />
-              <p className="text-[10px] text-zinc-500 mt-1">Email cannot be changed directly.</p>
+              <p className="text-[10px] text-gray-500 mt-1">Email cannot be changed directly.</p>
             </div>
           </div>
 
@@ -127,7 +127,7 @@ const MemberProfile = () => {
                 onChange={handleChange}
                 disabled={!isEditing}
                 required
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
+                className="w-full bg-[#111111] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
               />
             </div>
             <div>
@@ -139,7 +139,7 @@ const MemberProfile = () => {
                 onChange={handleChange}
                 disabled={!isEditing}
                 required
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
+                className="w-full bg-[#111111] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
               />
             </div>
             <div>
@@ -150,7 +150,7 @@ const MemberProfile = () => {
                 onChange={handleChange}
                 disabled={!isEditing}
                 required
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
+                className="w-full bg-[#111111] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
               >
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -168,7 +168,7 @@ const MemberProfile = () => {
               onChange={handleChange}
               disabled={!isEditing}
               required
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
+              className="w-full bg-[#111111] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
             />
           </div>
 
@@ -181,12 +181,12 @@ const MemberProfile = () => {
               onChange={handleChange}
               disabled={!isEditing}
               required
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-100 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
+              className="w-full bg-[#111111] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 disabled:opacity-50"
             />
           </div>
 
           {isEditing && (
-            <div className="pt-4 border-t border-zinc-800 flex justify-end gap-3">
+            <div className="pt-4 border-t border-white/10 flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => {
@@ -200,7 +200,7 @@ const MemberProfile = () => {
                     emergencyContact: member.emergencyContact,
                   });
                 }}
-                className="flex items-center gap-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 px-6 py-2.5 rounded-lg transition-all"
+                className="flex items-center gap-2 bg-[#111111] hover:bg-white/5 text-zinc-300 px-6 py-2.5 rounded-lg transition-all"
               >
                 <X className="w-4 h-4" /> Cancel
               </button>

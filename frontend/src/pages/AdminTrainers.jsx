@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { UserPlus, Edit, Trash2, ShieldAlert, X, Dumbbell } from 'lucide-react';
+import { UserPlus, Edit, Trash2, ShieldAlert, X, Dumbbell, UserCheck } from 'lucide-react';
 
 const EMPTY_FORM = {
   name: '',
@@ -9,6 +9,9 @@ const EMPTY_FORM = {
   specialization: '',
   experience: '',
   salary: '',
+  dob: '',
+  qualifications: '',
+  joiningDate: '',
 };
 
 const AdminTrainers = () => {
@@ -23,9 +26,24 @@ const AdminTrainers = () => {
   const [formError, setFormError] = useState(null);
   const [saving, setSaving] = useState(false);
 
+  const [members, setMembers] = useState([]);
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [selectedTrainer, setSelectedTrainer] = useState(null);
+  const [selectedMember, setSelectedMember] = useState('');
+
   useEffect(() => {
     fetchTrainers();
+    fetchMembers();
   }, []);
+
+  const fetchMembers = async () => {
+    try {
+      const response = await api.get('/members');
+      if (response.data.success) setMembers(response.data.data);
+    } catch (err) {
+      console.error('Failed to fetch members for assignment', err);
+    }
+  };
 
   const fetchTrainers = async () => {
     setLoading(true);
@@ -55,6 +73,9 @@ const AdminTrainers = () => {
       specialization: trainer.specialization || '',
       experience: trainer.experience || '',
       salary: trainer.salary || '',
+      dob: trainer.dob ? trainer.dob.split('T')[0] : '',
+      qualifications: trainer.qualifications ? trainer.qualifications.join(', ') : '',
+      joiningDate: trainer.joiningDate ? trainer.joiningDate.split('T')[0] : '',
     });
     setFormError(null);
     setShowModal(true);
@@ -80,16 +101,22 @@ const AdminTrainers = () => {
           specialization: formData.specialization,
           experience: Number(formData.experience),
           salary: Number(formData.salary),
+          dob: formData.dob || undefined,
+          qualifications: formData.qualifications ? formData.qualifications.split(',').map(q => q.trim()) : [],
+          joiningDate: formData.joiningDate || undefined,
         });
         if (response.data.success) { closeModal(); fetchTrainers(); }
       } else {
         const response = await api.post('/trainers', {
-          name: formData.name,
+          fullName: formData.name, // The backend expects fullName for create
           email: formData.email,
           phone: formData.phone,
           specialization: formData.specialization,
           experience: Number(formData.experience),
           salary: Number(formData.salary),
+          dob: formData.dob || undefined,
+          qualifications: formData.qualifications ? formData.qualifications.split(',').map(q => q.trim()) : [],
+          joiningDate: formData.joiningDate || undefined,
         });
         if (response.data.success) { closeModal(); fetchTrainers(); }
       }
@@ -111,9 +138,32 @@ const AdminTrainers = () => {
     }
   };
 
+  const openAssignModal = (trainer) => {
+    setSelectedTrainer(trainer);
+    setSelectedMember('');
+    setShowAssignModal(true);
+  };
+
+  const handleAssignMember = async (e) => {
+    e.preventDefault();
+    if (!selectedMember) return;
+    setSaving(true);
+    try {
+      const response = await api.put(`/trainers/${selectedTrainer._id}/assign`, { memberId: selectedMember });
+      if (response.data.success) {
+        setShowAssignModal(false);
+        fetchTrainers();
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to assign member');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   if (loading) return (
     <div className="flex items-center justify-center h-64">
-      <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-950/40 border-t-violet-500"></div>
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/10 border-t-violet-500"></div>
     </div>
   );
 
@@ -127,7 +177,7 @@ const AdminTrainers = () => {
         </div>
         <button
           onClick={openAddModal}
-          className="flex items-center space-x-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] text-white px-5 py-2.5 rounded-xl font-bold transition-all text-sm shadow-md"
+          className="flex items-center space-x-2 bg-[#c1ff00] text-black hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] text-white px-5 py-2.5 rounded-xl font-bold transition-all text-sm shadow-md"
         >
           <UserPlus className="w-4 h-4" />
           <span>Add Trainer</span>
@@ -143,9 +193,9 @@ const AdminTrainers = () => {
       )}
 
       {/* Table */}
-      <div className="rounded-2xl border border-indigo-950/40 bg-[#111827]/40 overflow-hidden shadow-lg">
+      <div className="rounded-2xl border border-white/10 bg-[#111827]/40 overflow-hidden shadow-lg">
         <table className="w-full text-left text-sm">
-          <thead className="bg-[#0c1122] text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-indigo-950/40">
+          <thead className="bg-[#111111] text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-white/10">
             <tr>
               <th className="p-4">Trainer Name</th>
               <th className="p-4">Specialization</th>
@@ -169,8 +219,15 @@ const AdminTrainers = () => {
                 </td>
                 <td className="p-4 flex space-x-2">
                   <button
+                    onClick={() => openAssignModal(t)}
+                    className="p-1.5 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:text-white rounded-lg transition-colors border border-cyan-500/20"
+                    title="Assign Member"
+                  >
+                    <UserCheck className="w-4 h-4" />
+                  </button>
+                  <button
                     onClick={() => openEditModal(t)}
-                    className="p-1.5 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 hover:text-white rounded-lg transition-colors border border-indigo-500/20"
+                    className="p-1.5 bg-indigo-500/10 text-[#c1ff00] hover:bg-indigo-500/20 hover:text-white rounded-lg transition-colors border border-indigo-500/20"
                     title="Edit Trainer"
                   >
                     <Edit className="w-4 h-4" />
@@ -189,7 +246,7 @@ const AdminTrainers = () => {
               <tr>
                 <td colSpan="6" className="p-12 text-center text-slate-500 text-xs">
                   <Dumbbell className="h-8 w-8 mx-auto mb-3 text-slate-700" />
-                  No trainers found. Click <strong className="text-violet-400">Add Trainer</strong> to get started.
+                  No trainers found. Click <strong className="text-[#c1ff00]">Add Trainer</strong> to get started.
                 </td>
               </tr>
             )}
@@ -200,7 +257,7 @@ const AdminTrainers = () => {
       {/* Add / Edit Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
-          <div className="w-full max-w-lg rounded-3xl border border-indigo-950/40 bg-[#111827] shadow-2xl p-8 relative">
+          <div className="w-full max-w-lg rounded-3xl border border-white/10 bg-[#111827] shadow-2xl p-8 relative">
             {/* Close */}
             <button
               onClick={closeModal}
@@ -235,7 +292,7 @@ const AdminTrainers = () => {
                   <input
                     name="name" required value={formData.name} onChange={handleFormChange}
                     placeholder="Marcus Vance"
-                    className="w-full rounded-xl border border-indigo-950/40 bg-[#090d16] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                    className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
                   />
                 </div>
 
@@ -246,7 +303,7 @@ const AdminTrainers = () => {
                     <input
                       name="email" type="email" required value={formData.email} onChange={handleFormChange}
                       placeholder="trainer@kenzofitness.com"
-                      className="w-full rounded-xl border border-indigo-950/40 bg-[#090d16] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                      className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
                     />
                   </div>
                 )}
@@ -258,7 +315,7 @@ const AdminTrainers = () => {
                     <input
                       name="phone" value={formData.phone} onChange={handleFormChange}
                       placeholder="+1 305 555 0001"
-                      className="w-full rounded-xl border border-indigo-950/40 bg-[#090d16] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                      className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
                     />
                   </div>
                 )}
@@ -269,7 +326,7 @@ const AdminTrainers = () => {
                   <input
                     name="specialization" required value={formData.specialization} onChange={handleFormChange}
                     placeholder="e.g. Strength & Bodybuilding"
-                    className="w-full rounded-xl border border-indigo-950/40 bg-[#090d16] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                    className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
                   />
                 </div>
 
@@ -279,7 +336,35 @@ const AdminTrainers = () => {
                   <input
                     name="experience" type="number" min="0" required value={formData.experience} onChange={handleFormChange}
                     placeholder="8"
-                    className="w-full rounded-xl border border-indigo-950/40 bg-[#090d16] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                    className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                  />
+                </div>
+
+                {/* DOB */}
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Date of Birth</label>
+                  <input
+                    name="dob" type="date" value={formData.dob} onChange={handleFormChange}
+                    className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                  />
+                </div>
+
+                {/* Joining Date */}
+                <div>
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Joining Date</label>
+                  <input
+                    name="joiningDate" type="date" value={formData.joiningDate} onChange={handleFormChange}
+                    className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                  />
+                </div>
+
+                {/* Qualifications */}
+                <div className="sm:col-span-2">
+                  <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Qualifications (comma separated)</label>
+                  <input
+                    name="qualifications" value={formData.qualifications} onChange={handleFormChange}
+                    placeholder="ACE Certified, CPR, CrossFit L1"
+                    className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
                   />
                 </div>
 
@@ -289,7 +374,7 @@ const AdminTrainers = () => {
                   <input
                     name="salary" type="number" min="0" value={formData.salary} onChange={handleFormChange}
                     placeholder="4500"
-                    className="w-full rounded-xl border border-indigo-950/40 bg-[#090d16] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
+                    className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
                   />
                 </div>
               </div>
@@ -302,16 +387,51 @@ const AdminTrainers = () => {
               <div className="flex space-x-3 pt-2">
                 <button
                   type="button" onClick={closeModal}
-                  className="flex-1 rounded-xl border border-indigo-950/40 bg-transparent py-3 text-xs font-bold text-slate-400 hover:text-white hover:border-slate-600 transition-all"
+                  className="flex-1 rounded-xl border border-white/10 bg-transparent py-3 text-xs font-bold text-slate-400 hover:text-white hover:border-slate-600 transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit" disabled={saving}
-                  className="flex-1 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 py-3 text-xs font-bold text-white shadow-md shadow-violet-950/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] active:scale-[0.98] transition-all disabled:opacity-50"
+                  className="flex-1 rounded-xl bg-[#c1ff00] text-black py-3 text-xs font-bold text-white shadow-md shadow-violet-950/30 hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] active:scale-[0.98] transition-all disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : editingTrainer ? 'Save Changes' : 'Create Trainer'}
                 </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Assign Member Modal */}
+      {showAssignModal && selectedTrainer && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
+          <div className="w-full max-w-sm rounded-3xl border border-white/10 bg-[#111827] shadow-2xl p-8 relative">
+            <button onClick={() => setShowAssignModal(false)} className="absolute top-5 right-5 text-slate-500 hover:text-white transition-colors">
+              <X className="h-5 w-5" />
+            </button>
+            <div className="mb-6">
+              <h2 className="text-xl font-black text-white uppercase tracking-tight">Assign Member</h2>
+              <p className="text-xs text-slate-500 mt-1">Select a member to assign to {selectedTrainer.name}</p>
+            </div>
+            <form onSubmit={handleAssignMember} className="space-y-4">
+              <div>
+                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Select Member</label>
+                <select
+                  required
+                  value={selectedMember}
+                  onChange={(e) => setSelectedMember(e.target.value)}
+                  className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
+                >
+                  <option value="" disabled>-- Select a Member --</option>
+                  {members.map(m => (
+                    <option key={m._id} value={m._id}>{m.fullName || m.name} ({m.email})</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex space-x-3 pt-2">
+                <button type="button" onClick={() => setShowAssignModal(false)} className="flex-1 rounded-xl border border-white/10 bg-transparent py-3 text-xs font-bold text-slate-400 hover:text-white transition-all">Cancel</button>
+                <button type="submit" disabled={saving || !selectedMember} className="flex-1 rounded-xl bg-cyan-500 text-black py-3 text-xs font-bold shadow-md hover:bg-cyan-400 active:scale-[0.98] transition-all disabled:opacity-50">Assign</button>
               </div>
             </form>
           </div>

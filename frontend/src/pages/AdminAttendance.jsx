@@ -30,7 +30,7 @@ const AdminAttendance = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black text-white uppercase tracking-tight flex items-center space-x-2">
-            <UserCheck className="h-7 w-7 text-violet-400" />
+            <UserCheck className="h-7 w-7 text-[#c1ff00]" />
             <span>Attendance Log</span>
           </h1>
           <p className="text-xs text-slate-500 mt-1">View member check-ins filtered by date.</p>
@@ -38,8 +38,8 @@ const AdminAttendance = () => {
 
         <div className="flex items-center space-x-3">
           {/* Date filter */}
-          <div className="flex items-center space-x-2 rounded-xl border border-indigo-950/40 bg-[#090d16] px-3 py-2">
-            <CalendarIcon className="h-4 w-4 text-violet-400" />
+          <div className="flex items-center space-x-2 rounded-xl border border-white/10 bg-[#0a0a0a] px-3 py-2">
+            <CalendarIcon className="h-4 w-4 text-[#c1ff00]" />
             <input
               type="date"
               value={filterDate}
@@ -55,7 +55,7 @@ const AdminAttendance = () => {
           {/* Refresh */}
           <button
             onClick={fetchAttendance}
-            className="flex items-center space-x-1.5 rounded-xl border border-indigo-950/40 bg-[#090d16] px-3 py-2 text-xs text-slate-400 hover:text-white transition-colors"
+            className="flex items-center space-x-1.5 rounded-xl border border-white/10 bg-[#0a0a0a] px-3 py-2 text-xs text-slate-400 hover:text-white transition-colors"
           >
             <RefreshCw className="h-3.5 w-3.5" />
             <span>Refresh</span>
@@ -65,38 +65,38 @@ const AdminAttendance = () => {
 
       {/* Stats Row */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-indigo-950/40 bg-[#111827]/40 p-4">
+        <div className="rounded-2xl border border-white/10 bg-[#111827]/40 p-4">
           <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Total Records</p>
           <p className="text-2xl font-black text-white mt-1">{attendances.length}</p>
         </div>
-        <div className="rounded-2xl border border-indigo-950/40 bg-[#111827]/40 p-4">
+        <div className="rounded-2xl border border-white/10 bg-[#111827]/40 p-4">
           <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Present</p>
           <p className="text-2xl font-black text-emerald-400 mt-1">{attendances.filter(a => a.status === 'present').length}</p>
         </div>
-        <div className="rounded-2xl border border-indigo-950/40 bg-[#111827]/40 p-4">
+        <div className="rounded-2xl border border-white/10 bg-[#111827]/40 p-4">
           <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Checked Out</p>
-          <p className="text-2xl font-black text-violet-400 mt-1">{attendances.filter(a => a.checkOut).length}</p>
+          <p className="text-2xl font-black text-[#c1ff00] mt-1">{attendances.filter(a => a.checkOut).length}</p>
         </div>
       </div>
 
       {/* Table */}
-      <div className="rounded-2xl border border-indigo-950/40 bg-[#111827]/40 overflow-hidden shadow-lg">
+      <div className="rounded-2xl border border-white/10 bg-[#111827]/40 overflow-hidden shadow-lg">
         {loading ? (
           <div className="py-20 flex justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-950/40 border-t-violet-500"></div>
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-white/10 border-t-violet-500"></div>
           </div>
         ) : attendances.length === 0 ? (
           <div className="py-20 text-center">
             <UserCheck className="h-10 w-10 mx-auto mb-3 text-slate-700" />
             <p className="text-slate-500 text-sm">No attendance records found{filterDate ? ` for ${filterDate}` : ''}.</p>
             {filterDate && (
-              <button onClick={() => setFilterDate('')} className="mt-3 text-xs text-violet-400 hover:underline">Clear filter to show all records</button>
+              <button onClick={() => setFilterDate('')} className="mt-3 text-xs text-[#c1ff00] hover:underline">Clear filter to show all records</button>
             )}
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
-              <thead className="bg-[#0c1122] text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-indigo-950/40">
+              <thead className="bg-[#111111] text-slate-500 uppercase text-[10px] font-bold tracking-widest border-b border-white/10">
                 <tr>
                   <th className="px-6 py-4">Member</th>
                   <th className="px-6 py-4">Date</th>
@@ -119,7 +119,7 @@ const AdminAttendance = () => {
                     <td className="px-6 py-4">
                       {a.booking && a.booking.slot ? (
                         <>
-                          <p className="font-semibold text-violet-400">{a.booking.slot.slotName}</p>
+                          <p className="font-semibold text-[#c1ff00]">{a.booking.slot.slotName}</p>
                           <p className="text-[10px] text-slate-500">{a.booking.slot.startTime} - {a.booking.slot.endTime}</p>
                         </>
                       ) : (
@@ -129,7 +129,7 @@ const AdminAttendance = () => {
                     <td className="px-6 py-4 text-emerald-400 font-semibold">
                       {a.checkIn ? new Date(a.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '—'}
                     </td>
-                    <td className="px-6 py-4 text-amber-400 font-semibold">
+                    <td className="px-6 py-4 text-[#c1ff00] font-semibold">
                       {a.checkOut ? new Date(a.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '—'}
                     </td>
                     <td className="px-6 py-4">

@@ -18,7 +18,7 @@ const getPlans = async (req, res, next) => {
 // @access  Private/Admin
 const createPlan = async (req, res) => {
   try {
-    const { name, price, durationInDays, features, isActive } = req.body;
+    const { name, price, durationInDays, description, features, isActive } = req.body;
 
     const planExists = await MembershipPlan.findOne({ name });
     if (planExists) {
@@ -29,6 +29,7 @@ const createPlan = async (req, res) => {
       name,
       price,
       durationInDays,
+      description: description || '',
       features: features || [],
       isActive: isActive !== undefined ? isActive : true,
     });
@@ -45,7 +46,7 @@ const createPlan = async (req, res) => {
 // @access  Private/Admin
 const updatePlan = async (req, res) => {
   try {
-    const { name, price, durationInDays, features, isActive } = req.body;
+    const { name, price, durationInDays, description, features, isActive } = req.body;
 
     let plan = await MembershipPlan.findById(req.params.id);
     if (!plan) {
@@ -66,6 +67,7 @@ const updatePlan = async (req, res) => {
         name: name || plan.name,
         price: price !== undefined ? price : plan.price,
         durationInDays: durationInDays !== undefined ? durationInDays : plan.durationInDays,
+        description: description !== undefined ? description : plan.description,
         features: features || plan.features,
         isActive: isActive !== undefined ? isActive : plan.isActive,
       },

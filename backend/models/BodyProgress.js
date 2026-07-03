@@ -33,10 +33,25 @@ const bodyProgressSchema = new mongoose.Schema({
   waist: {
     type: Number,
   },
-  arms: {
+  hip: {
+    type: Number,
+  },
+  shoulders: {
+    type: Number,
+  },
+  biceps: {
+    type: Number,
+  },
+  forearms: {
     type: Number,
   },
   thighs: {
+    type: Number,
+  },
+  calves: {
+    type: Number,
+  },
+  neck: {
     type: Number,
   },
   notes: {

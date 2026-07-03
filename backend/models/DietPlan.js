@@ -27,21 +27,27 @@ const dietPlanSchema = new mongoose.Schema({
   carbs: {
     type: Number,
   },
-  fats: {
+  fat: {
     type: Number,
   },
-  waterIntake: {
+  water: {
     type: String,
   },
   meals: [{
     mealType: {
       type: String,
-      enum: ['breakfast', 'lunch', 'dinner', 'snack'],
+      enum: ['Breakfast', 'Lunch', 'Dinner', 'Snack'],
     },
     foodItems: String,
     calories: Number,
     notes: String,
   }],
+  supplements: {
+    type: String,
+  },
+  notes: {
+    type: String,
+  },
   startDate: {
     type: Date,
   },

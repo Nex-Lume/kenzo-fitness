@@ -42,7 +42,7 @@ const PeakTime = () => {
   const getStatusTextColor = (status) => {
     switch (status) {
       case 'Peak': return 'text-red-400';
-      case 'Medium': return 'text-amber-400';
+      case 'Medium': return 'text-[#c1ff00]';
       default: return 'text-emerald-400';
     }
   };
@@ -51,10 +51,10 @@ const PeakTime = () => {
     <div className="max-w-5xl mx-auto space-y-8 px-4 py-8 md:px-0">
       <div className="text-center space-y-3">
         <h1 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tight flex items-center justify-center space-x-3">
-          <Activity className="h-8 w-8 md:h-10 md:w-10 text-orange-500" />
+          <Activity className="h-8 w-8 md:h-10 md:w-10 text-[#c1ff00]" />
           <span>Gym Crowd Forecast</span>
         </h1>
-        <p className="text-sm text-zinc-400 max-w-xl mx-auto">
+        <p className="text-sm text-gray-400 max-w-xl mx-auto">
           Check today's real-time gym occupancy to plan your workout at the perfect time.
         </p>
       </div>
@@ -72,8 +72,8 @@ const PeakTime = () => {
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-lg font-bold text-zinc-100">{slot.slotName}</h3>
-                  <div className="flex items-center space-x-1.5 text-zinc-400 text-xs mt-1">
+                  <h3 className="text-lg font-bold text-white">{slot.slotName}</h3>
+                  <div className="flex items-center space-x-1.5 text-gray-400 text-xs mt-1">
                     <Clock className="h-3.5 w-3.5" />
                     <span className="font-semibold">{slot.startTime} - {slot.endTime}</span>
                   </div>
@@ -85,14 +85,14 @@ const PeakTime = () => {
               
               <div className="flex items-end justify-between pt-2">
                 <div className="flex flex-col">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Occupancy</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Occupancy</span>
                   <span className={`text-2xl font-black ${getStatusTextColor(slot.status)}`}>
                     {Math.round(slot.occupancy)}%
                   </span>
                 </div>
                 
                 <div className="flex flex-col items-end">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 mb-1">Booked</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Booked</span>
                   <div className="flex items-center space-x-1.5 text-zinc-300 font-semibold">
                     <Users className="h-4 w-4" />
                     <span>{slot.bookedCount} / {slot.capacity}</span>
