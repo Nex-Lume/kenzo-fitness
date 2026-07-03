@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../api/axios';
 import { Apple, Plus, Trash2, Edit3, X, ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -9,6 +9,8 @@ const TrainerDiets = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingPlan, setEditingPlan] = useState(null);
   const [expandedPlan, setExpandedPlan] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const isSaving = useRef(false);
   const [form, setForm] = useState({
     memberId: '',
     planName: '',
@@ -53,6 +55,9 @@ const TrainerDiets = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSaving.current) return;
+    isSaving.current = true;
+    setSaving(true);
     try {
       if (editingPlan) {
         await api.put(`/diets/${editingPlan._id}`, form);
@@ -65,6 +70,9 @@ const TrainerDiets = () => {
       fetchPlans();
     } catch (err) {
       alert(err.response?.data?.message || 'Error saving diet plan');
+    } finally {
+      isSaving.current = false;
+      setSaving(false);
     }
   };
 
@@ -165,26 +173,29 @@ const TrainerDiets = () => {
 
       {/* Form */}
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 space-y-6">
-          <h2 className="text-lg font-bold text-white">{editingPlan ? 'Edit Diet Plan' : 'Create Diet Plan'}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <form onSubmit={handleSubmit} className="bg-[#1a1a1a] border border-white/10 rounded-3xl shadow-xl p-8 space-y-8">
+          <div className="border-b border-white/10 pb-4">
+            <h2 className="text-xl font-black text-white uppercase tracking-tight">{editingPlan ? 'Edit Diet Plan' : 'Create Diet Plan'}</h2>
+            <p className="text-xs text-slate-500 mt-1">Configure the overarching details of this nutrition plan.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Member *</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Member *</label>
               <select value={form.memberId} onChange={(e) => setForm({ ...form, memberId: e.target.value })} required
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none">
-                <option value="">Select Member</option>
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-emerald-500 outline-none transition-all">
+                <option value="">-- Select Member --</option>
                 {members.map(m => <option key={m._id} value={m._id}>{m.fullName || m.name}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Plan Name *</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Plan Name *</label>
               <input value={form.planName} onChange={(e) => setForm({ ...form, planName: e.target.value })} required
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none" placeholder="e.g. Weight Loss Diet" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-emerald-500 outline-none transition-all" placeholder="e.g. Weight Loss Diet" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Goal</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Goal</label>
               <input value={form.goal} onChange={(e) => setForm({ ...form, goal: e.target.value })}
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none" placeholder="e.g. Calorie deficit" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-emerald-500 outline-none transition-all" placeholder="e.g. Calorie deficit" />
             </div>
           </div>
 
@@ -192,31 +203,31 @@ const TrainerDiets = () => {
           <div>
             <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2">Nutritional Targets</label>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-              <div className="bg-zinc-950 border border-white/10 rounded-xl p-3 text-center">
+              <div className="bg-[#111111]/50 border border-white/10 rounded-xl p-3 text-center">
                 <p className="text-[10px] text-[#c1ff00] font-bold uppercase">Calories</p>
                 <input value={form.calories} onChange={(e) => setForm({ ...form, calories: e.target.value })} type="number" placeholder="2000"
                   className="w-full bg-transparent text-center text-lg font-black text-white mt-1 outline-none" />
                 <p className="text-[10px] text-zinc-600">kcal/day</p>
               </div>
-              <div className="bg-zinc-950 border border-white/10 rounded-xl p-3 text-center">
+              <div className="bg-[#111111]/50 border border-white/10 rounded-xl p-3 text-center">
                 <p className="text-[10px] text-red-400 font-bold uppercase">Protein</p>
                 <input value={form.protein} onChange={(e) => setForm({ ...form, protein: e.target.value })} type="number" placeholder="150"
                   className="w-full bg-transparent text-center text-lg font-black text-white mt-1 outline-none" />
                 <p className="text-[10px] text-zinc-600">grams</p>
               </div>
-              <div className="bg-zinc-950 border border-white/10 rounded-xl p-3 text-center">
+              <div className="bg-[#111111]/50 border border-white/10 rounded-xl p-3 text-center">
                 <p className="text-[10px] text-[#c1ff00] font-bold uppercase">Carbs</p>
                 <input value={form.carbs} onChange={(e) => setForm({ ...form, carbs: e.target.value })} type="number" placeholder="200"
                   className="w-full bg-transparent text-center text-lg font-black text-white mt-1 outline-none" />
                 <p className="text-[10px] text-zinc-600">grams</p>
               </div>
-              <div className="bg-zinc-950 border border-white/10 rounded-xl p-3 text-center">
+              <div className="bg-[#111111]/50 border border-white/10 rounded-xl p-3 text-center">
                 <p className="text-[10px] text-[#c1ff00] font-bold uppercase">Fats</p>
                 <input value={form.fat} onChange={(e) => setForm({ ...form, fat: e.target.value })} type="number" placeholder="60"
                   className="w-full bg-transparent text-center text-lg font-black text-white mt-1 outline-none" />
                 <p className="text-[10px] text-zinc-600">grams</p>
               </div>
-              <div className="bg-zinc-950 border border-white/10 rounded-xl p-3 text-center">
+              <div className="bg-[#111111]/50 border border-white/10 rounded-xl p-3 text-center">
                 <p className="text-[10px] text-cyan-400 font-bold uppercase">Water</p>
                 <input value={form.water} onChange={(e) => setForm({ ...form, water: e.target.value })} placeholder="3L"
                   className="w-full bg-transparent text-center text-lg font-black text-white mt-1 outline-none" />
@@ -228,63 +239,66 @@ const TrainerDiets = () => {
           {/* Dates */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Start Date</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Start Date</label>
               <input type="date" value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })}
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-emerald-500 outline-none transition-all" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">End Date</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">End Date</label>
               <input type="date" value={form.endDate} onChange={(e) => setForm({ ...form, endDate: e.target.value })}
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-emerald-500 outline-none transition-all" />
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Supplements</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Supplements</label>
               <input value={form.supplements} onChange={(e) => setForm({ ...form, supplements: e.target.value })}
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none" placeholder="e.g. Whey Protein, Creatine" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-emerald-500 outline-none transition-all" placeholder="e.g. Whey Protein, Creatine" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">General Notes</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">General Notes</label>
               <input value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none" placeholder="e.g. Cheat meal on Sunday" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-emerald-500 outline-none transition-all" placeholder="e.g. Cheat meal on Sunday" />
             </div>
           </div>
 
           {/* Meals */}
-          <div>
-            <div className="flex justify-between items-center mb-3">
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Meals</label>
-              <button type="button" onClick={addMeal} className="text-xs text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1"><Plus className="w-3 h-3" /> Add Meal</button>
+          <div className="pt-4 border-t border-white/10">
+            <div className="flex justify-between items-center mb-4">
+              <label className="text-sm font-black text-white uppercase tracking-wider">Meals</label>
+              <button type="button" onClick={addMeal} className="text-xs bg-[#10b981]/10 text-emerald-400 hover:bg-[#10b981]/20 px-3 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition-colors border border-[#10b981]/20"><Plus className="w-3.5 h-3.5" /> Add Meal</button>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {form.meals.map((meal, idx) => (
-                <div key={idx} className="bg-zinc-950 border border-white/10 rounded-xl p-4 grid grid-cols-2 md:grid-cols-4 gap-3 relative">
+                <div key={idx} className="bg-[#111111]/50 border border-white/10 rounded-2xl p-5 grid grid-cols-2 md:grid-cols-4 gap-4 relative group">
+                  <div className="absolute -left-3 -top-3 w-6 h-6 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[10px] font-black border-2 border-[#1a1a1a] z-10">{idx + 1}</div>
                   <select value={meal.mealType} onChange={(e) => updateMeal(idx, 'mealType', e.target.value)}
-                    className="bg-[#111111] border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white outline-none focus:ring-1 focus:ring-emerald-500">
+                    className="bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all">
                     <option value="Breakfast">Breakfast</option>
                     <option value="Lunch">Lunch</option>
                     <option value="Dinner">Dinner</option>
                     <option value="Snack">Snack</option>
                   </select>
                   <input value={meal.foodItems} onChange={(e) => updateMeal(idx, 'foodItems', e.target.value)} placeholder="Food Items"
-                    className="bg-[#111111] border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white outline-none focus:ring-1 focus:ring-emerald-500" />
+                    className="bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all" />
                   <input value={meal.calories} onChange={(e) => updateMeal(idx, 'calories', e.target.value)} placeholder="Calories" type="number"
-                    className="bg-[#111111] border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white outline-none focus:ring-1 focus:ring-emerald-500" />
+                    className="bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all" />
                   <input value={meal.notes} onChange={(e) => updateMeal(idx, 'notes', e.target.value)} placeholder="Notes"
-                    className="bg-[#111111] border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white outline-none focus:ring-1 focus:ring-emerald-500" />
+                    className="bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all" />
                   {form.meals.length > 1 && (
-                    <button type="button" onClick={() => removeMeal(idx)} className="absolute top-2 right-2 text-red-400 hover:text-red-300"><Trash2 className="w-3.5 h-3.5" /></button>
+                    <button type="button" onClick={() => removeMeal(idx)} className="absolute -right-2 -top-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-400">
+                      <X className="w-3.5 h-3.5" />
+                    </button>
                   )}
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="flex justify-end">
-            <button type="submit" className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-8 py-3 rounded-xl text-sm font-bold transition-all shadow-lg">
-              {editingPlan ? 'Update Plan' : 'Create Plan'}
+          <div className="flex justify-end pt-4 border-t border-white/10">
+            <button disabled={saving} type="submit" className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-10 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-lg active:scale-[0.98] disabled:opacity-50">
+              {saving ? 'Saving...' : editingPlan ? 'Update Plan' : 'Create Plan'}
             </button>
           </div>
         </form>
@@ -293,14 +307,15 @@ const TrainerDiets = () => {
       {/* Plans List */}
       <div className="space-y-4">
         {plans.length === 0 ? (
-          <div className="text-center py-16 bg-[#111111]/30 border border-white/10 rounded-2xl">
-            <Apple className="w-12 h-12 text-zinc-700 mx-auto mb-4" />
-            <p className="text-gray-500 text-sm">No diet plans created yet.</p>
+          <div className="text-center py-16 bg-[#111827]/20 border border-dashed border-white/10 rounded-3xl backdrop-blur-sm">
+            <Apple className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+            <p className="text-slate-400 text-sm font-semibold">No diet plans created yet.</p>
+            <p className="text-slate-500 text-xs mt-1">Click "New Plan" to assign a diet to a member.</p>
           </div>
         ) : (
           plans.map(plan => (
-            <div key={plan._id} className="bg-[#111111]/30 border border-white/10 rounded-2xl overflow-hidden">
-              <div className="p-5 flex justify-between items-center cursor-pointer hover:bg-[#1a1a1a] transition-colors"
+            <div key={plan._id} className="bg-[#111827]/40 border border-white/10 rounded-3xl overflow-hidden shadow-lg backdrop-blur-md group hover:bg-[#111827]/60 transition-all hover:-translate-y-0.5 hover:shadow-emerald-900/20">
+              <div className="p-6 flex justify-between items-center cursor-pointer transition-colors"
                 onClick={() => setExpandedPlan(expandedPlan === plan._id ? null : plan._id)}>
                 <div className="flex items-center gap-4">
                   <div className="p-2.5 bg-emerald-500/10 rounded-xl">

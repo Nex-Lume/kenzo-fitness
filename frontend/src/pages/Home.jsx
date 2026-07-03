@@ -31,9 +31,8 @@ const Home = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const res = await axios.get(
-          (import.meta.env.VITE_API_URL || 'http://localhost:5000/api') + '/plans'
-        );
+        const apiUrl = import.meta.env.VITE_API_URL || 'https://kenzo-fitness.onrender.com/api';
+        const res = await axios.get(`${apiUrl}/plans`);
         if (res.data && res.data.data && res.data.data.length > 0) {
           setPlans(res.data.data);
         }

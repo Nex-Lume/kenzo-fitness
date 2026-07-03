@@ -41,8 +41,8 @@ const AdminReports = () => {
 
   const handleExport = async (endpoint, format) => {
     try {
-      // In a real app, you would use window.open or fetch as blob
-      window.open(`http://localhost:5000/api/reports/${endpoint}?format=${format}`);
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://kenzo-fitness.onrender.com/api';
+      window.open(`${apiUrl}/reports/${endpoint}?format=${format}`);
     } catch (error) {
       console.error(error);
     }

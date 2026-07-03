@@ -20,9 +20,10 @@ const MemberGoals = () => {
       // Actually, in the backend we have /api/goals/member/:memberId. But the member needs their ID.
       // Alternatively, the member's ID is in the user context, but it's a User ID, not Member ID.
       // Let's fetch /members/profile first to get the member ID.
-      const profileRes = await api.get('/members/profile');
+      const profileRes = await api.get('/auth/me');
       if (profileRes.data.success) {
-        const memberId = profileRes.data.data._id;
+        const memberId = profileRes.data.member?._id;
+        if (!memberId) return; // if not found
         const goalRes = await api.get(`/goals/member/${memberId}`);
         if (goalRes.data.success) {
           setGoals(goalRes.data.data);
@@ -48,30 +49,30 @@ const MemberGoals = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {goals.map(goal => (
-          <div key={goal._id} className="bg-[#111111]/30 border border-white/10 rounded-2xl p-6 relative">
+          <div key={goal._id} className="bg-[#111827]/40 border border-white/10 rounded-3xl p-6 relative shadow-xl backdrop-blur-md group hover:-translate-y-1 hover:shadow-sky-900/20 transition-all">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-3 bg-[#c1ff00]/10 rounded-xl"><Target className="w-5 h-5 text-[#c1ff00]" /></div>
+              <div className="p-3 bg-sky-500/10 rounded-2xl group-hover:bg-sky-500/20 transition-colors"><Target className="w-5 h-5 text-sky-400" /></div>
               <div>
                 <h3 className="text-sm font-bold text-white">{goal.goalType}</h3>
-                <p className="text-[10px] text-gray-400">Trainer: {goal.trainerId?.fullName || 'N/A'}</p>
+                <p className="text-[10px] font-semibold text-slate-400">Trainer: <span className="text-slate-300">{goal.trainerId?.fullName || 'N/A'}</span></p>
               </div>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-4">
               <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-400">Progress</span>
-                  <span className="text-[#c1ff00] font-bold">{goal.progress}%</span>
+                <div className="flex justify-between text-xs mb-1.5">
+                  <span className="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Progress</span>
+                  <span className="text-sky-400 font-black">{goal.progress}%</span>
                 </div>
-                <div className="h-2 bg-zinc-900 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#c1ff00]" style={{ width: `${goal.progress}%` }}></div>
+                <div className="h-2 bg-black/40 rounded-full overflow-hidden shadow-inner">
+                  <div className="h-full bg-gradient-to-r from-sky-600 to-sky-400 rounded-full transition-all duration-1000" style={{ width: `${goal.progress}%` }}></div>
                 </div>
               </div>
-              <div className="flex justify-between text-[10px] text-gray-500 pt-2 border-t border-white/5">
-                <span>Target: {goal.targetWeight ? `${goal.targetWeight} kg` : 'N/A'}</span>
-                <span>Due: {goal.deadline ? new Date(goal.deadline).toLocaleDateString() : 'No date'}</span>
+              <div className="flex justify-between text-[10px] font-semibold text-slate-400 pt-3 border-t border-white/10">
+                <span>Target: <span className="text-white">{goal.targetWeight ? `${goal.targetWeight} kg` : 'N/A'}</span></span>
+                <span>Due: <span className="text-white">{goal.deadline ? new Date(goal.deadline).toLocaleDateString() : 'No date'}</span></span>
               </div>
               <div className="pt-2 flex justify-between items-center">
-                <span className={`text-[10px] uppercase font-bold px-2 py-1 rounded-md ${goal.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-400' : goal.status === 'Failed' ? 'bg-red-500/10 text-red-400' : 'bg-blue-500/10 text-blue-400'}`}>
+                <span className={`text-[10px] uppercase font-black tracking-wider px-3 py-1.5 rounded-lg border ${goal.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : goal.status === 'Failed' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-sky-500/10 text-sky-400 border-sky-500/20'}`}>
                   {goal.status}
                 </span>
               </div>
@@ -79,9 +80,10 @@ const MemberGoals = () => {
           </div>
         ))}
         {goals.length === 0 && (
-          <div className="col-span-full text-center py-12 border border-dashed border-white/10 rounded-2xl">
-            <Activity className="w-10 h-10 text-gray-600 mx-auto mb-3" />
-            <p className="text-sm text-gray-500">No active goals yet. Discuss with your trainer to set some targets!</p>
+          <div className="col-span-full text-center py-16 bg-[#111827]/20 border border-dashed border-white/10 rounded-3xl backdrop-blur-sm">
+            <Activity className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+            <p className="text-sm font-semibold text-slate-400">No active goals yet.</p>
+            <p className="text-xs text-slate-500 mt-1">Discuss with your trainer to set some targets!</p>
           </div>
         )}
       </div>

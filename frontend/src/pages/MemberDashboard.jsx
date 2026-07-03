@@ -282,7 +282,10 @@ const MemberDashboard = () => {
                 
                 {/* QR Code Button */}
                 <button 
-                  onClick={() => window.open(`http://localhost:5000/api/qr/${upcomingBooking._id}`, '_blank')}
+                  onClick={() => {
+                    const apiUrl = import.meta.env.VITE_API_URL || 'https://kenzo-fitness.onrender.com/api';
+                    window.open(`${apiUrl}/qr/${upcomingBooking._id}`, '_blank');
+                  }}
                   className="mt-4 w-full flex items-center justify-center space-x-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold py-2 rounded-lg hover:bg-emerald-500/20 transition-colors"
                 >
                   <QrCode className="w-4 h-4" />

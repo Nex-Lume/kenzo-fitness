@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../api/axios';
 import { Target, Upload, TrendingUp, Activity, Ruler } from 'lucide-react';
 import { Line } from 'react-chartjs-2';
@@ -22,6 +22,8 @@ const MemberProgress = () => {
   
   // New entry form state
   const [showLogModal, setShowLogModal] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const isSaving = useRef(false);
   const [form, setForm] = useState({
     weight: '',
     height: '',
@@ -90,6 +92,9 @@ const MemberProgress = () => {
 
   const submitLog = async (e) => {
     e.preventDefault();
+    if (isSaving.current) return;
+    isSaving.current = true;
+    setSaving(true);
     try {
       await api.post('/progress', {
         ...form,
@@ -101,6 +106,9 @@ const MemberProgress = () => {
       fetchData(); // refresh
     } catch (err) {
       alert('Failed to log progress');
+    } finally {
+      isSaving.current = false;
+      setSaving(false);
     }
   };
 
@@ -128,7 +136,7 @@ const MemberProgress = () => {
         </div>
         <button 
           onClick={() => setShowLogModal(true)}
-          className="bg-sky-500 text-sky-950 px-5 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs hover:bg-sky-600 transition-colors"
+          className="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white px-6 py-3 rounded-xl font-black uppercase tracking-wider text-xs shadow-lg shadow-sky-900/20 transition-all active:scale-[0.98]"
         >
           Log Progress
         </button>
@@ -137,11 +145,15 @@ const MemberProgress = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Goals & Current Stats */}
         <div className="space-y-6">
-          <div className="bg-[#111111]/30 border border-zinc-900 p-6 rounded-2xl">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2 mb-6">
+          <div className="bg-[#111827]/40 border border-white/10 p-8 rounded-3xl shadow-xl backdrop-blur-md relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-8 opacity-5">
+              <Target className="w-32 h-32 text-sky-500" />
+            </div>
+            <h2 className="text-xl font-black text-white flex items-center gap-2 mb-8 relative z-10 uppercase tracking-tight">
               <Target className="w-5 h-5 text-sky-500" /> Current Goals
             </h2>
-            {goals.slice(0,2).map(goal => (
+            <div className="relative z-10">
+              {goals.slice(0,2).map(goal => (
               <div key={goal._id} className="mb-4 last:mb-0">
                 <div className="flex justify-between text-xs mb-2">
                   <span className="font-semibold text-zinc-300">{goal.type}</span>
@@ -153,64 +165,74 @@ const MemberProgress = () => {
                 <p className="text-[10px] text-gray-500 mt-2 text-right">Target Weight: {goal.targetWeight} kg</p>
               </div>
             ))}
-            {goals.length === 0 && <p className="text-xs text-gray-500">No active goals.</p>}
+            </div>
+            {goals.length === 0 && <p className="text-sm font-semibold text-slate-400">No active goals.</p>}
           </div>
 
-          <div className="bg-[#111111]/30 border border-zinc-900 p-6 rounded-2xl">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2 mb-6">
+          <div className="bg-[#111827]/40 border border-white/10 p-8 rounded-3xl shadow-xl backdrop-blur-md relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-8 opacity-5">
+              <Activity className="w-32 h-32 text-emerald-500" />
+            </div>
+            <h2 className="text-xl font-black text-white flex items-center gap-2 mb-8 relative z-10 uppercase tracking-tight">
               <Activity className="w-5 h-5 text-emerald-500" /> Latest Log
             </h2>
-            {history.length > 0 ? (
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-zinc-950 border border-white/10 p-4 rounded-xl text-center">
+            <div className="relative z-10">
+              {history.length > 0 ? (
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-[#0a0a0a] border border-white/10 p-4 rounded-2xl text-center shadow-inner">
                   <span className="block text-[10px] uppercase text-gray-500 font-bold mb-1">Weight</span>
                   <span className="text-2xl font-black text-white">{history[history.length-1].weight} kg</span>
+                  </div>
+                  <div className="bg-[#0a0a0a] border border-white/10 p-4 rounded-2xl text-center shadow-inner">
+                    <span className="block text-[10px] uppercase text-gray-500 font-bold mb-1">BMI</span>
+                    <span className="text-2xl font-black text-sky-400">{history[history.length-1].bmi || '-'}</span>
+                  </div>
+                  <div className="bg-[#0a0a0a] border border-white/10 p-4 rounded-2xl text-center shadow-inner">
+                    <span className="block text-[10px] uppercase text-gray-500 font-bold mb-1">Body Fat</span>
+                    <span className="text-2xl font-black text-white">{history[history.length-1].bodyFat || '-'}%</span>
+                  </div>
+                  <div className="bg-[#0a0a0a] border border-white/10 p-4 rounded-2xl text-center shadow-inner">
+                    <span className="block text-[10px] uppercase text-gray-500 font-bold mb-1">Waist</span>
+                    <span className="text-2xl font-black text-white">{history[history.length-1].waist || '-'} cm</span>
+                  </div>
                 </div>
-                <div className="bg-zinc-950 border border-white/10 p-4 rounded-xl text-center">
-                  <span className="block text-[10px] uppercase text-gray-500 font-bold mb-1">BMI</span>
-                  <span className="text-2xl font-black text-sky-400">{history[history.length-1].bmi || '-'}</span>
-                </div>
-                <div className="bg-zinc-950 border border-white/10 p-4 rounded-xl text-center">
-                  <span className="block text-[10px] uppercase text-gray-500 font-bold mb-1">Body Fat</span>
-                  <span className="text-2xl font-black text-white">{history[history.length-1].bodyFat || '-'}%</span>
-                </div>
-                <div className="bg-zinc-950 border border-white/10 p-4 rounded-xl text-center">
-                  <span className="block text-[10px] uppercase text-gray-500 font-bold mb-1">Waist</span>
-                  <span className="text-2xl font-black text-white">{history[history.length-1].waist || '-'} cm</span>
-                </div>
-              </div>
-            ) : (
-              <p className="text-xs text-gray-500">No logs yet.</p>
-            )}
+              ) : (
+                <p className="text-sm font-semibold text-slate-400">No logs yet.</p>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Chart & Photos */}
         <div className="lg:col-span-2 space-y-8">
-          <div className="bg-[#111111]/30 border border-zinc-900 p-6 rounded-2xl h-80">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2 mb-4">
+          <div className="bg-[#111827]/40 border border-white/10 p-8 rounded-3xl shadow-xl backdrop-blur-md h-80">
+            <h2 className="text-xl font-black text-white flex items-center gap-2 mb-6 uppercase tracking-tight">
               <TrendingUp className="w-5 h-5 text-sky-500" /> Weight Tracker
             </h2>
             {history.length > 0 ? (
-              <Line data={chartData} options={{ maintainAspectRatio: false }} />
+              <div className="h-48">
+                <Line data={chartData} options={{ maintainAspectRatio: false, elements: { point: { radius: 4, hitRadius: 10, hoverRadius: 6, backgroundColor: '#0ea5e9' } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } }, x: { grid: { display: false }, ticks: { color: '#9ca3af' } } }, plugins: { legend: { labels: { color: '#fff', font: { family: 'inherit', weight: 'bold' } } } } }} />
+              </div>
             ) : (
-              <div className="h-full flex items-center justify-center text-gray-500 text-sm">Not enough data to generate chart.</div>
+              <div className="h-48 flex items-center justify-center text-slate-400 font-semibold text-sm">Not enough data to generate chart.</div>
             )}
           </div>
 
-          <div className="bg-[#111111]/30 border border-zinc-900 p-6 rounded-2xl">
-            <h2 className="text-lg font-bold text-white mb-4">Progress Gallery</h2>
-            <div className="flex gap-4 overflow-x-auto pb-4">
+          <div className="bg-[#111827]/40 border border-white/10 p-8 rounded-3xl shadow-xl backdrop-blur-md">
+            <h2 className="text-xl font-black text-white mb-6 uppercase tracking-tight">Progress Gallery</h2>
+            <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar">
               {history.filter(h => h.progressPhotos && h.progressPhotos.length > 0).map(h => (
-                <div key={h._id} className="min-w-[150px] aspect-[3/4] rounded-xl overflow-hidden relative border border-white/10 shrink-0">
-                  <img src={h.progressPhotos[0]} alt="Progress" className="w-full h-full object-cover" />
-                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8 text-[10px] text-zinc-300 font-bold">
+                <div key={h._id} className="min-w-[150px] aspect-[3/4] rounded-2xl overflow-hidden relative border border-white/10 shrink-0 shadow-lg group">
+                  <img src={h.progressPhotos[0]} alt="Progress" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black via-black/80 to-transparent p-4 pt-12 text-[10px] text-zinc-300 font-bold tracking-wider">
                     {new Date(h.date).toLocaleDateString()}
                   </div>
                 </div>
               ))}
               {history.filter(h => h.progressPhotos && h.progressPhotos.length > 0).length === 0 && (
-                <p className="text-xs text-gray-500 w-full text-center py-8">No progress photos uploaded yet.</p>
+                <div className="w-full flex items-center justify-center py-12 bg-white/5 border border-dashed border-white/10 rounded-2xl">
+                  <p className="text-sm font-semibold text-slate-400">No progress photos uploaded yet.</p>
+                </div>
               )}
             </div>
           </div>
@@ -219,90 +241,95 @@ const MemberProgress = () => {
 
       {/* Log Progress Modal */}
       {showLogModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/80 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-[#111111] border border-white/10 rounded-2xl w-full max-w-2xl shadow-2xl p-6 my-8 relative">
-            <h2 className="text-xl font-bold text-white mb-6">Log New Entry</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-[#111827] border border-white/10 rounded-3xl w-full max-w-3xl shadow-2xl p-8 my-8 relative">
+            <div className="border-b border-white/10 pb-4 mb-6">
+              <h2 className="text-2xl font-black text-white tracking-tight uppercase">Log New Entry</h2>
+              <p className="text-xs text-slate-400 mt-1">Record your latest body measurements and photos.</p>
+            </div>
             
-            <form onSubmit={submitLog} className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <form onSubmit={submitLog} className="space-y-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Weight (kg)</label>
-                  <input type="number" step="0.1" required value={form.weight} onChange={e => handleWeightChange(e.target.value)} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" placeholder="e.g. 75" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Weight (kg)</label>
+                  <input type="number" step="0.1" required value={form.weight} onChange={e => handleWeightChange(e.target.value)} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" placeholder="e.g. 75" />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Height (cm)</label>
-                  <input type="number" step="0.1" value={form.height} onChange={e => handleHeightChange(e.target.value)} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" placeholder="e.g. 175" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Height (cm)</label>
+                  <input type="number" step="0.1" value={form.height} onChange={e => handleHeightChange(e.target.value)} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" placeholder="e.g. 175" />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">BMI (auto)</label>
-                  <input type="text" readOnly value={form.bmi} className="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-4 py-3 text-sky-400 font-bold focus:outline-none cursor-not-allowed" placeholder="—" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">BMI (auto)</label>
+                  <input type="text" readOnly value={form.bmi} className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-xs text-sky-400 font-black focus:outline-none cursor-not-allowed" placeholder="—" />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Body Fat %</label>
-                  <input type="number" step="0.1" value={form.bodyFat} onChange={e => setForm({ ...form, bodyFat: e.target.value })} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" placeholder="e.g. 15" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Body Fat %</label>
+                  <input type="number" step="0.1" value={form.bodyFat} onChange={e => setForm({ ...form, bodyFat: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" placeholder="e.g. 15" />
                 </div>
                 
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Chest (cm)</label>
-                  <input type="number" step="0.1" value={form.chest} onChange={e => setForm({ ...form, chest: e.target.value })} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Chest (cm)</label>
+                  <input type="number" step="0.1" value={form.chest} onChange={e => setForm({ ...form, chest: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Waist (cm)</label>
-                  <input type="number" step="0.1" value={form.waist} onChange={e => setForm({ ...form, waist: e.target.value })} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Waist (cm)</label>
+                  <input type="number" step="0.1" value={form.waist} onChange={e => setForm({ ...form, waist: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Hip (cm)</label>
-                  <input type="number" step="0.1" value={form.hip} onChange={e => setForm({ ...form, hip: e.target.value })} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Hip (cm)</label>
+                  <input type="number" step="0.1" value={form.hip} onChange={e => setForm({ ...form, hip: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Shoulders (cm)</label>
-                  <input type="number" step="0.1" value={form.shoulders} onChange={e => setForm({ ...form, shoulders: e.target.value })} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Shoulders (cm)</label>
+                  <input type="number" step="0.1" value={form.shoulders} onChange={e => setForm({ ...form, shoulders: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Biceps (cm)</label>
-                  <input type="number" step="0.1" value={form.biceps} onChange={e => setForm({ ...form, biceps: e.target.value })} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Biceps (cm)</label>
+                  <input type="number" step="0.1" value={form.biceps} onChange={e => setForm({ ...form, biceps: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Forearms (cm)</label>
-                  <input type="number" step="0.1" value={form.forearms} onChange={e => setForm({ ...form, forearms: e.target.value })} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Forearms (cm)</label>
+                  <input type="number" step="0.1" value={form.forearms} onChange={e => setForm({ ...form, forearms: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Thighs (cm)</label>
-                  <input type="number" step="0.1" value={form.thighs} onChange={e => setForm({ ...form, thighs: e.target.value })} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Thighs (cm)</label>
+                  <input type="number" step="0.1" value={form.thighs} onChange={e => setForm({ ...form, thighs: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Calves (cm)</label>
-                  <input type="number" step="0.1" value={form.calves} onChange={e => setForm({ ...form, calves: e.target.value })} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Calves (cm)</label>
+                  <input type="number" step="0.1" value={form.calves} onChange={e => setForm({ ...form, calves: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" />
                 </div>
                 <div className="col-span-2 md:col-span-1">
-                  <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Neck (cm)</label>
-                  <input type="number" step="0.1" value={form.neck} onChange={e => setForm({ ...form, neck: e.target.value })} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500" />
+                  <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider">Neck (cm)</label>
+                  <input type="number" step="0.1" value={form.neck} onChange={e => setForm({ ...form, neck: e.target.value })} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 transition-all" />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase text-gray-500 mb-2 mt-2">Notes</label>
-                <textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} rows={2} className="w-full bg-zinc-950 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-sky-500 resize-none" placeholder="How are you feeling today?" />
+                <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider mt-2">Notes</label>
+                <textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} rows={2} className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-1 focus:ring-sky-500 resize-none transition-all" placeholder="How are you feeling today?" />
               </div>
               
               <div>
-                <label className="block text-xs font-bold uppercase text-gray-500 mb-2 mt-2">Progress Photo</label>
-                <div className="border-2 border-dashed border-white/10 rounded-xl p-6 text-center hover:border-sky-500/50 transition-colors">
+                <label className="block text-[10px] font-bold uppercase text-slate-400 mb-1.5 tracking-wider mt-2">Progress Photo</label>
+                <div className="border border-dashed border-white/20 rounded-2xl p-8 text-center hover:border-sky-500/50 hover:bg-sky-500/5 transition-all">
                   <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" id="photo-upload" />
                   <label htmlFor="photo-upload" className="cursor-pointer flex flex-col items-center">
                     {photoPreview ? (
-                      <img src={photoPreview} alt="Preview" className="h-32 object-cover rounded-lg shadow-lg mb-2" />
+                      <img src={photoPreview} alt="Preview" className="h-40 object-cover rounded-xl shadow-lg mb-4" />
                     ) : (
-                      <Upload className="w-8 h-8 text-zinc-600 mb-2" />
+                      <Upload className="w-10 h-10 text-slate-500 mb-3" />
                     )}
-                    <span className="text-xs text-gray-400 font-semibold">{photoPreview ? 'Change Photo' : 'Upload latest physique photo'}</span>
+                    <span className="text-xs text-slate-300 font-semibold">{photoPreview ? 'Change Photo' : 'Upload latest physique photo'}</span>
                   </label>
                 </div>
               </div>
               
-              <div className="pt-4 flex justify-end gap-3 border-t border-white/10 mt-6">
-                <button type="button" onClick={() => setShowLogModal(false)} className="px-4 py-2 text-sm font-semibold text-zinc-300 hover:bg-white/5 rounded-lg">Cancel</button>
-                <button type="submit" className="px-5 py-2 text-sm font-bold text-sky-950 bg-sky-500 hover:bg-sky-600 rounded-lg">Save Log</button>
+              <div className="pt-6 flex justify-end gap-4 border-t border-white/10 mt-6">
+                <button type="button" onClick={() => setShowLogModal(false)} className="px-6 py-3 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-colors">Cancel</button>
+                <button disabled={saving} type="submit" className="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white px-8 py-3 rounded-xl text-xs font-black uppercase tracking-wider shadow-lg shadow-sky-900/20 transition-all active:scale-[0.98] disabled:opacity-50">
+                  {saving ? 'Saving...' : 'Save Log'}
+                </button>
               </div>
             </form>
           </div>

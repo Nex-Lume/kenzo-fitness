@@ -67,9 +67,9 @@ const AdminTrainers = () => {
   const openEditModal = (trainer) => {
     setEditingTrainer(trainer);
     setFormData({
-      name: trainer.name || '',
-      email: trainer.user?.email || '',
-      phone: trainer.user?.phone || '',
+      name: trainer.fullName || trainer.user?.name || '',
+      email: trainer.user?.email || trainer.email || '',
+      phone: trainer.user?.phone || trainer.phone || '',
       specialization: trainer.specialization || '',
       experience: trainer.experience || '',
       salary: trainer.salary || '',
@@ -208,7 +208,7 @@ const AdminTrainers = () => {
           <tbody className="divide-y divide-indigo-950/30 text-slate-300">
             {trainers.map((t) => (
               <tr key={t._id} className="hover:bg-[#111827]/60 transition-colors">
-                <td className="p-4 font-semibold text-white">{t.name}</td>
+                <td className="p-4 font-semibold text-white">{t.fullName || t.user?.name || '—'}</td>
                 <td className="p-4 text-slate-400">{t.specialization || '—'}</td>
                 <td className="p-4 text-slate-400">{t.experience ? `${t.experience} yrs` : '—'}</td>
                 <td className="p-4 text-slate-400">{t.salary ? `₹${t.salary.toLocaleString()}` : '—'}</td>
@@ -305,6 +305,7 @@ const AdminTrainers = () => {
                       placeholder="trainer@kenzofitness.com"
                       className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] px-4 py-2.5 text-xs text-white placeholder-slate-600 outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-colors"
                     />
+                    <p className="text-[10px] text-slate-500 mt-1">Default password: <span className="text-[#c1ff00] font-mono">trainerpassword123</span></p>
                   </div>
                 )}
 

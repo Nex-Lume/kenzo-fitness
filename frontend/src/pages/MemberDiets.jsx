@@ -9,8 +9,8 @@ const MemberDiets = () => {
   useEffect(() => {
     const fetchDiets = async () => {
       try {
-        const memberRes = await api.get('/members/me');
-        const memberId = memberRes.data.data?._id;
+        const memberRes = await api.get('/auth/me');
+        const memberId = memberRes.data.member?._id;
         if (memberId) {
           const response = await api.get(`/diets/member/${memberId}`);
           if (response.data.success) {
@@ -50,8 +50,8 @@ const MemberDiets = () => {
 
       <div className="space-y-8">
         {diets.map(plan => (
-          <div key={plan._id} className="bg-[#111111]/30 border border-zinc-900 rounded-2xl overflow-hidden">
-            <div className="bg-emerald-500/10 border-b border-emerald-500/20 p-6 flex justify-between items-center">
+          <div key={plan._id} className="bg-[#111827]/40 border border-white/10 rounded-3xl overflow-hidden shadow-lg backdrop-blur-md group hover:bg-[#111827]/60 transition-all hover:-translate-y-0.5 hover:shadow-emerald-900/20">
+            <div className="bg-emerald-500/10 border-b border-emerald-500/20 p-6 flex justify-between items-center transition-colors">
               <div>
                 <h2 className="text-xl font-bold text-emerald-400">{plan.planName}</h2>
                 <div className="flex gap-2 mt-2">
@@ -79,7 +79,7 @@ const MemberDiets = () => {
                     🍽️ Meal Plan
                   </h3>
                   {plan.meals?.map((meal, idx) => (
-                    <div key={idx} className="bg-zinc-950 border border-white/10 p-5 rounded-xl">
+                    <div key={idx} className="bg-[#111111]/50 border border-white/10 p-5 rounded-xl">
                       <div className="flex justify-between items-center mb-3">
                         <h3 className="text-xs text-gray-400 uppercase font-bold tracking-wider">{mealTypeLabels[meal.mealType] || meal.mealType}</h3>
                         {meal.calories && <span className="text-xs font-bold text-[#c1ff00]">{meal.calories} kcal</span>}
@@ -154,7 +154,7 @@ const MemberDiets = () => {
                     </div>
                   </div>
                   {(plan.supplements || plan.notes) && (
-                    <div className="bg-[#1a1a1a] border border-white/10 p-6 rounded-xl space-y-4">
+                    <div className="bg-[#111111]/50 border border-white/10 p-6 rounded-xl space-y-4">
                       {plan.supplements && (
                         <div>
                           <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2 mb-1">
@@ -177,9 +177,10 @@ const MemberDiets = () => {
           </div>
         ))}
         {diets.length === 0 && (
-          <div className="text-center text-gray-500 py-16 bg-[#111111]/10 border border-dashed border-white/10 rounded-2xl">
-            <Apple className="w-12 h-12 text-zinc-700 mx-auto mb-4" />
-            <p>You don't have any diet plans assigned yet.</p>
+          <div className="text-center py-16 bg-[#111827]/20 border border-dashed border-white/10 rounded-3xl backdrop-blur-sm">
+            <Apple className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+            <p className="text-slate-400 text-sm font-semibold">No diet plans assigned yet.</p>
+            <p className="text-slate-500 text-xs mt-1">Your trainer will assign them soon.</p>
           </div>
         )}
       </div>

@@ -16,6 +16,10 @@ const Login = () => {
     if (user) {
       if (user.role === 'admin') {
         navigate('/admin');
+      } else if (user.role === 'trainer') {
+        navigate('/trainer');
+      } else if (user.role === 'reception') {
+        navigate('/reception/scan');
       } else {
         navigate('/dashboard');
       }
@@ -32,6 +36,10 @@ const Login = () => {
       if (data.success) {
         if (data.user.role === 'admin') {
           navigate('/admin');
+        } else if (data.user.role === 'trainer') {
+          navigate('/trainer');
+        } else if (data.user.role === 'reception') {
+          navigate('/reception/scan');
         } else {
           navigate('/dashboard');
         }

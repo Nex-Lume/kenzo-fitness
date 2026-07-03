@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../api/axios';
 import { TrendingUp, Plus, Trash2, X, ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -9,6 +9,8 @@ const TrainerProgress = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [expandedEntry, setExpandedEntry] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const isSaving = useRef(false);
   const [form, setForm] = useState({
     weight: '',
     height: '',
@@ -62,6 +64,9 @@ const TrainerProgress = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSaving.current) return;
+    isSaving.current = true;
+    setSaving(true);
     try {
       await api.post('/progress', {
         memberId: selectedMember,
@@ -72,6 +77,9 @@ const TrainerProgress = () => {
       fetchProgress(selectedMember);
     } catch (err) {
       alert(err.response?.data?.message || 'Error logging progress');
+    } finally {
+      isSaving.current = false;
+      setSaving(false);
     }
   };
 
@@ -143,83 +151,83 @@ const TrainerProgress = () => {
 
       {/* Form */}
       {showForm && selectedMember && (
-        <form onSubmit={handleSubmit} className="bg-[#1a1a1a] border border-white/10 rounded-2xl p-6 space-y-6">
-          <h2 className="text-lg font-bold text-white">Log Progress for <span className="text-cyan-400">{selectedMemberName}</span></h2>
+        <form onSubmit={handleSubmit} className="bg-[#1a1a1a] border border-white/10 rounded-3xl shadow-xl p-8 space-y-6">
+          <h2 className="text-xl font-black text-white uppercase tracking-tight">Log Progress for <span className="text-cyan-400">{selectedMemberName}</span></h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Weight (kg)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Weight (kg)</label>
               <input value={form.weight} onChange={(e) => handleWeightChange(e.target.value)} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" placeholder="75" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" placeholder="75" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Height (cm)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Height (cm)</label>
               <input value={form.height} onChange={(e) => handleHeightChange(e.target.value)} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" placeholder="175" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" placeholder="175" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">BMI (auto)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">BMI (auto)</label>
               <input value={form.bmi} readOnly
-                className="w-full bg-zinc-950/50 border border-white/10 rounded-xl px-4 py-3 text-sm text-cyan-400 font-bold outline-none cursor-not-allowed" placeholder="—" />
+                className="w-full bg-zinc-950/50 border border-white/10 rounded-xl px-4 py-3 text-xs text-cyan-400 font-bold outline-none cursor-not-allowed" placeholder="—" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Body Fat %</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Body Fat %</label>
               <input value={form.bodyFat} onChange={(e) => setForm({ ...form, bodyFat: e.target.value })} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" placeholder="18" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" placeholder="18" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Chest (cm)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Chest (cm)</label>
               <input value={form.chest} onChange={(e) => setForm({ ...form, chest: e.target.value })} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Waist (cm)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Waist (cm)</label>
               <input value={form.waist} onChange={(e) => setForm({ ...form, waist: e.target.value })} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Hip (cm)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Hip (cm)</label>
               <input value={form.hip} onChange={(e) => setForm({ ...form, hip: e.target.value })} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Shoulders (cm)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Shoulders (cm)</label>
               <input value={form.shoulders} onChange={(e) => setForm({ ...form, shoulders: e.target.value })} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Biceps (cm)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Biceps (cm)</label>
               <input value={form.biceps} onChange={(e) => setForm({ ...form, biceps: e.target.value })} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Forearms (cm)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Forearms (cm)</label>
               <input value={form.forearms} onChange={(e) => setForm({ ...form, forearms: e.target.value })} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Thighs (cm)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Thighs (cm)</label>
               <input value={form.thighs} onChange={(e) => setForm({ ...form, thighs: e.target.value })} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Calves (cm)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Calves (cm)</label>
               <input value={form.calves} onChange={(e) => setForm({ ...form, calves: e.target.value })} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" />
             </div>
             <div>
-              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Neck (cm)</label>
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Neck (cm)</label>
               <input value={form.neck} onChange={(e) => setForm({ ...form, neck: e.target.value })} type="number" step="0.1"
-                className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none" />
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none transition-all" />
             </div>
           </div>
-          <div>
-            <label className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Notes</label>
+          <div className="pt-2">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">Notes</label>
             <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} rows={2}
-              className="w-full bg-zinc-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none resize-none" placeholder="Any observations..." />
+              className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:ring-1 focus:ring-cyan-500 outline-none resize-none transition-all" placeholder="Any observations..." />
           </div>
-          <div className="flex justify-end">
-            <button type="submit" className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white px-8 py-3 rounded-xl text-sm font-bold transition-all shadow-lg">
-              Log Progress
+          <div className="flex justify-end pt-4 border-t border-white/10">
+            <button disabled={saving} type="submit" className="bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white px-10 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all shadow-lg active:scale-[0.98] disabled:opacity-50">
+              {saving ? 'Saving...' : 'Log Progress'}
             </button>
           </div>
         </form>
@@ -230,8 +238,8 @@ const TrainerProgress = () => {
         <div className="space-y-3">
           <h2 className="text-lg font-bold text-white">Progress History — <span className="text-cyan-400">{selectedMemberName}</span></h2>
           {progressData.slice().reverse().map((entry) => (
-            <div key={entry._id} className="bg-[#111111]/30 border border-white/10 rounded-2xl overflow-hidden">
-              <div className="p-5 flex justify-between items-center cursor-pointer hover:bg-[#1a1a1a] transition-colors"
+            <div key={entry._id} className="bg-[#111827]/40 border border-white/10 rounded-3xl overflow-hidden shadow-lg backdrop-blur-md group hover:bg-[#111827]/60 transition-all hover:-translate-y-0.5 hover:shadow-cyan-900/20">
+              <div className="p-6 flex justify-between items-center cursor-pointer transition-colors"
                 onClick={() => setExpandedEntry(expandedEntry === entry._id ? null : entry._id)}>
                 <div className="flex items-center gap-4">
                   <div className="p-2.5 bg-cyan-500/10 rounded-xl">
@@ -291,9 +299,10 @@ const TrainerProgress = () => {
       )}
 
       {selectedMember && progressData.length === 0 && !loading && (
-        <div className="text-center py-16 bg-[#111111]/30 border border-white/10 rounded-2xl">
-          <TrendingUp className="w-12 h-12 text-zinc-700 mx-auto mb-4" />
-          <p className="text-gray-500 text-sm">No progress entries for this member yet.</p>
+        <div className="text-center py-16 bg-[#111827]/20 border border-dashed border-white/10 rounded-3xl backdrop-blur-sm">
+          <TrendingUp className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+          <p className="text-slate-400 text-sm font-semibold">No progress entries for this member yet.</p>
+          <p className="text-slate-500 text-xs mt-1">Click "Log Progress" to add their first check-in.</p>
         </div>
       )}
     </div>

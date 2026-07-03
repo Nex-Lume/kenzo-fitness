@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../api/axios';
 import { Target, Plus, Trash2, Edit3, X, Activity } from 'lucide-react';
 
@@ -8,6 +8,8 @@ const TrainerGoals = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingGoal, setEditingGoal] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const isSaving = useRef(false);
   
   const [form, setForm] = useState({
     memberId: '',
@@ -45,6 +47,9 @@ const TrainerGoals = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSaving.current) return;
+    isSaving.current = true;
+    setSaving(true);
     try {
       if (editingGoal) {
         await api.put(`/goals/${editingGoal._id}`, form);
@@ -57,6 +62,9 @@ const TrainerGoals = () => {
       fetchGoals();
     } catch (err) {
       alert(err.response?.data?.message || 'Error saving goal');
+    } finally {
+      isSaving.current = false;
+      setSaving(false);
     }
   };
 
@@ -155,23 +163,33 @@ const TrainerGoals = () => {
             </div>
           </div>
           <div className="flex justify-end">
-            <button type="submit" className="bg-[#c1ff00] text-black px-8 py-3 rounded-xl text-sm font-bold shadow-lg">{editingGoal ? 'Update Goal' : 'Save Goal'}</button>
+            <button disabled={saving} type="submit" className="bg-[#c1ff00] text-black px-8 py-3 rounded-xl text-sm font-bold shadow-lg disabled:opacity-50 transition-opacity">
+              {saving ? 'Saving...' : editingGoal ? 'Update Goal' : 'Save Goal'}
+            </button>
           </div>
         </form>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {goals.map(goal => (
-          <div key={goal._id} className="bg-[#111111]/30 border border-white/10 rounded-2xl p-6 relative">
-            <div className="absolute top-4 right-4 flex gap-2">
-              <button onClick={() => handleEdit(goal)} className="p-1 text-gray-500 hover:text-[#c1ff00]"><Edit3 className="w-4 h-4" /></button>
-              <button onClick={() => handleDelete(goal._id)} className="p-1 text-gray-500 hover:text-red-400"><Trash2 className="w-4 h-4" /></button>
-            </div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-3 bg-violet-500/10 rounded-xl"><Target className="w-5 h-5 text-violet-400" /></div>
-              <div>
-                <h3 className="text-sm font-bold text-white">{goal.goalType}</h3>
-                <p className="text-[10px] text-gray-400">For: {goal.memberId?.fullName || 'N/A'}</p>
+          <div key={goal._id} className="bg-[#111827]/40 border border-white/10 rounded-3xl p-6 relative flex flex-col justify-between shadow-lg backdrop-blur-md group hover:bg-[#111827]/60 transition-all hover:-translate-y-1 hover:shadow-violet-900/20">
+            <div className="flex justify-between items-start mb-6">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-violet-500/10 flex items-center justify-center border border-violet-500/20 shrink-0">
+                  <Target className="w-5 h-5 text-violet-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-white truncate">{goal.goalType}</h3>
+                  <p className="text-xs text-slate-400 truncate">For: {goal.memberId?.fullName || 'N/A'}</p>
+                </div>
+              </div>
+              <div className="flex gap-1">
+                <button onClick={() => handleEdit(goal)} className="p-1.5 bg-indigo-500/10 text-[#c1ff00] hover:bg-indigo-500/20 hover:text-white rounded-lg transition-colors border border-indigo-500/20">
+                  <Edit3 className="w-4 h-4" />
+                </button>
+                <button onClick={() => handleDelete(goal._id)} className="p-1.5 bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors border border-red-500/20">
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             </div>
             <div className="space-y-3">
